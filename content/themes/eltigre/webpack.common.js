@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
-	entry: ['./dev/js/App.js', './dev/scss/global.scss'],
+	entry: ['./src/js/App.js', './src/scss/global.scss'],
 	output: {
 		filename: 'app.js',
 		path: path.resolve(__dirname, 'dist'),
