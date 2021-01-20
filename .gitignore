@@ -22,6 +22,7 @@ package-lock.json
 # ignore everything in the "wp-content" directory, except:
 # "themes" directory
 content/*
+content/themes/eltigre/dist
 !content/themes/
 !content/uploads/.gitkeep
 
