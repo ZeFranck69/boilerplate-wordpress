@@ -1,0 +1,114 @@
+@mixin vertical-align {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+@mixin horizontal-align {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+@mixin centered-align {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+}
+
+@mixin fs($sizeValue: $baseFontSize) {
+  font-size: $sizeValue + px;
+  font-size: ($sizeValue / $baseFontSize) + em;
+}
+
+$ease: (
+  in-quad: cubic-bezier(.55, .085, .68, .53),
+  in-cubic: cubic-bezier(.55, .055, .675, .19),
+  in-quart: cubic-bezier(.895, .03, .685, .22),
+  in-quint: cubic-bezier(.755, .05, .855, .06),
+  in-expo: cubic-bezier(.95, .05, .795, .035),
+  in-circ: cubic-bezier(.6, .04, .98, .335),
+  in-back: cubic-bezier(.6, -.28, .735, .045),
+  out-quad: cubic-bezier(.25, .46, .45, .94),
+  out-cubic: cubic-bezier(.215, .61, .355, 1),
+  out-quart: cubic-bezier(.165, .84, .44, 1),
+  out-quint: cubic-bezier(.23, 1, .32, 1),
+  out-sine: cubic-bezier(.39, .575, .565, 1),
+  out-expo: cubic-bezier(.19, 1, .22, 1),
+  out-circ: cubic-bezier(.075, .82, .165, 1),
+  out-back: cubic-bezier(.175, .885, .32, 1.275),
+  in-out-quad: cubic-bezier(.455, .03, .515, .955),
+  in-out-cubic: cubic-bezier(.645, .045, .355, 1),
+  in-out-sine: cubic-bezier(.445, .05, .55, .95),
+  in-out-circ: cubic-bezier(.785, .135, .15, .86),
+  in-out-back: cubic-bezier(.68, -.55, .265, 1.55),
+);
+
+@function ease($key) {
+  @if map-has-key($ease, $key) {
+    @return map-get($ease, $key);
+  }
+
+  @warn "Unkown '#{$key}' in $ease.";
+  @return null;
+}
+
+@mixin mobile {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin not-mobile {
+  @media only screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mobile-landscape {
+  @media only screen and (max-width: 768px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (min-width: 768px) and (max-width: 1020px) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media only screen and (min-width: 1020px) and (max-width: 1300px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media only screen and (min-width: 1600px) {
+    @content;
+  }
+}
+
+@mixin susy-use($config) {
+  //  parse and normalize any shorthand arguments
+  $config: susy-compile($config);
+
+  // record the global settings -
+  // and update the global variable with our new settings
+  $global: $susy;
+  $susy: map-merge($susy, $config) !global;
+
+  // any content inside this mixin
+  // will use the local settings
+  @content;
+
+  // return the global variable to its initial value
+  $susy: $global !global;
+}
