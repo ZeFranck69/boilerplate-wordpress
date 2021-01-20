@@ -1,0 +1,33 @@
+.toplevel_page_eltigre-support .title {
+	font-size: 40px;
+	text-transform: uppercase;
+	margin: 30px auto 50px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#support-form {
+	margin: 0 auto;
+	max-width: 768px;
+}
+
+#support-form .input-wrapper:not(:first-child) {
+	margin-top: 30px;
+}
+
+#support-form label {
+	font-size: 18px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+#support-form input,
+#support-form textarea {
+	width: 100%;
+}
+
+#support-form textarea {
+	resize: none;
+	height: 300px;
+}
