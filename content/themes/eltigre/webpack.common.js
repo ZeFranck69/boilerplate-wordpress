@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const autoprefixer = require('autoprefixer');
 
@@ -31,12 +32,6 @@ module.exports = {
 						options: {
 							presets: ['@babel/preset-env'],
 							plugins: ['@babel/plugin-proposal-class-properties'],
-						},
-					},
-					{
-						loader: 'eslint-loader',
-						options: {
-							fix: true,
 						},
 					},
 				],
@@ -83,6 +78,9 @@ module.exports = {
 	},
 	plugins: [
 		new WebpackBar(),
+		new ESLintPlugin({
+			fix: true,
+		}),
 		new StylelintPlugin({
 			fix: true,
 			files: './dev/scss/**/*.(s(c|a)ss|css)',
