@@ -14,7 +14,9 @@ if ( class_exists( 'Timber' ) ) {
 	class Eltigre_Init extends Timber\Site {
    
 		public function __construct() {
-			require 'class/Eltigre.php';
+			$this->load_extras();
+
+			require 'inc/class/Eltigre.php';
 			
 			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ), 10, 2 );
 			add_action( 'theme_meta_description', array( $this, 'get_meta_description' ) );
@@ -28,8 +30,6 @@ if ( class_exists( 'Timber' ) ) {
 			add_filter( 'timber/context', array( $this, 'add_to_context' ) );
 	
 			parent::__construct();
-
-			$this->load_extras();
 		}
 
 
@@ -156,6 +156,7 @@ if ( class_exists( 'Timber' ) ) {
 
 		private function load_extras() {
 			include_once 'inc/helper-functions.php';
+			include_once 'inc/constants/colors.php';
 		}
 	}
    
