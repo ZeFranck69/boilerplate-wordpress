@@ -13,6 +13,8 @@
     "ecmaVersion": 2016,
     "sourceType": "module"
   },
+  "rules": {
+  },
   "globals": {
     "wp": true,
     "jQuery": true

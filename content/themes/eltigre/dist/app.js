@@ -15,13 +15,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var scrollmagic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! scrollmagic */ "./node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js");
 /* harmony import */ var scrollmagic__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(scrollmagic__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
-/* harmony import */ var _Device__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Device */ "./dev/js/Device.js");
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/gsap-core.js");
+/* harmony import */ var scrollmagic_plugin_gsap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! scrollmagic-plugin-gsap */ "./node_modules/scrollmagic-plugin-gsap/index.js");
+/* harmony import */ var scrollmagic_plugin_gsap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(scrollmagic_plugin_gsap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _class_ScrollMagicController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./class/ScrollMagicController */ "./dev/js/class/ScrollMagicController.js");
+/* harmony import */ var swup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! swup */ "./node_modules/swup/lib/index.js");
+/* harmony import */ var _Flexibles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Flexibles */ "./dev/js/Flexibles.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+
+
+
+(0,scrollmagic_plugin_gsap__WEBPACK_IMPORTED_MODULE_1__.ScrollMagicPluginGsap)((scrollmagic__WEBPACK_IMPORTED_MODULE_0___default()), gsap__WEBPACK_IMPORTED_MODULE_2__.TweenMax, gsap__WEBPACK_IMPORTED_MODULE_3__.TimelineMax);
 
 
 
@@ -30,59 +39,27 @@ var App = /*#__PURE__*/function () {
   function App() {
     _classCallCheck(this, App);
 
-    this.scrollMagicController = new (scrollmagic__WEBPACK_IMPORTED_MODULE_0___default().Controller)();
-    this.scenes = [];
     this.revealManager();
-    this.debugManager();
+    (0,_Flexibles__WEBPACK_IMPORTED_MODULE_6__.default)();
   }
 
   _createClass(App, [{
     key: "revealManager",
     value: function revealManager() {
-      var _this = this;
-
-      document.querySelectorAll('[gsap-reveal]').forEach(function () {
-        var tween = gsap__WEBPACK_IMPORTED_MODULE_2__.default.fromTo(this, 1, {
+      document.querySelectorAll('[gsap-reveal]').forEach(function (el) {
+        var tween = gsap__WEBPACK_IMPORTED_MODULE_3__.TweenLite.fromTo(el, 1, {
           y: 40,
           autoAlpha: 0
         }, {
           y: 0,
-          autoAlpha: 1,
-          ease: Quad.easeOut
+          autoAlpha: 1
         });
-        var scene = new (scrollmagic__WEBPACK_IMPORTED_MODULE_0___default().Scene)({
-          triggerElement: this,
+        new (scrollmagic__WEBPACK_IMPORTED_MODULE_0___default().Scene)({
+          triggerElement: el,
           triggerHook: 0.95,
-          duration: window.clientHeight / 3
-        }).setTween(tween).addTo(_this.scrollMagicController);
-
-        _this.scenes.push(scene);
+          duration: window.innerHeight / 3
+        }).setTween(tween).addTo(_class_ScrollMagicController__WEBPACK_IMPORTED_MODULE_4__.default.controller);
       });
-    }
-  }, {
-    key: "debugManager",
-    value: function debugManager() {
-      var debugGrid = document.querySelector('.susy-grid');
-      var gridBck = window.getComputedStyle(debugGrid).backgroundImage;
-      window.addEventListener('keypress', function (ev) {
-        if (ev.keyCode == 100) {
-          var mainWrapper = document.querySelector('.main-wrapper');
-          var wrapperStyle = window.getComputedStyle(mainWrapper);
-
-          if (wrapperStyle.backgroundImage == 'none') {
-            mainWrapper.style.backgroundImage = gridBck;
-          } else {
-            mainWrapper.style.backgroundImage = 'none';
-          }
-        }
-      });
-    }
-  }], [{
-    key: "destroy",
-    value: function destroy() {
-      this.scrollMagicController.destroy(true);
-      this.scrollMagicController = null;
-      this.scenes = [];
     }
   }]);
 
@@ -91,48 +68,192 @@ var App = /*#__PURE__*/function () {
 
 
 document.addEventListener('DOMContentLoaded', function (ev) {
-  new App();
+  new App(); // const swup = new Swup();
+  // swup.on('contentReplaced', () => {
+  // 	window.scrollTo(0, 0);
+  // 	ScrollMagicController.reset();
+  // 	new App(false);
+  // });
 });
 
 /***/ }),
 
-/***/ "./dev/js/Device.js":
-/*!**************************!*\
-  !*** ./dev/js/Device.js ***!
-  \**************************/
+/***/ "./dev/js/Flexibles.js":
+/*!*****************************!*\
+  !*** ./dev/js/Flexibles.js ***!
+  \*****************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Device; }
-/* harmony export */ });
+var SECTIONS = {};
+
+var FlexiblesInit = function FlexiblesInit() {
+  for (var className in SECTIONS) {
+    if (document.querySelector(".".concat(className))) {
+      new SECTIONS[className](className);
+    }
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (FlexiblesInit);
+
+/***/ }),
+
+/***/ "./dev/js/class/ScrollMagicController.js":
+/*!***********************************************!*\
+  !*** ./dev/js/class/ScrollMagicController.js ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var debug_addIndicators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! debug.addIndicators */ "./node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js");
+/* harmony import */ var debug_addIndicators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(debug_addIndicators__WEBPACK_IMPORTED_MODULE_0__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Device = /*#__PURE__*/function () {
-  function Device() {
-    _classCallCheck(this, Device);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var ScrollMagic = __webpack_require__(/*! scrollmagic */ "./node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js");
+
+
+
+var ScrollMagicController = /*#__PURE__*/function () {
+  function ScrollMagicController() {
+    var _this = this;
+
+    var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, ScrollMagicController);
+
+    _defineProperty(this, "create", function () {
+      return _this.controller = new ScrollMagic.Controller(_this.args);
+    });
+
+    _defineProperty(this, "destroy", function () {
+      _this.controller.destroy(true);
+
+      _this.controller = null;
+    });
+
+    this.args = args;
+    this.create();
   }
 
-  _createClass(Device, null, [{
-    key: "isMobile",
-    value: function isMobile() {
-      return window.innerWidth < 768;
-    }
-  }, {
-    key: "isTouchDevice",
-    value: function isTouchDevice() {
-      return window.DocumentTouch && document instanceof DocumentTouch;
+  _createClass(ScrollMagicController, [{
+    key: "reset",
+    value: function reset() {
+      this.destroy();
+      this.create();
     }
   }]);
 
-  return Device;
+  return ScrollMagicController;
 }();
 
+/* harmony default export */ __webpack_exports__["default"] = (new ScrollMagicController({
+  addIndicators: true
+}));
+
+/***/ }),
+
+/***/ "./node_modules/delegate/src/closest.js":
+/*!**********************************************!*\
+  !*** ./node_modules/delegate/src/closest.js ***!
+  \**********************************************/
+/***/ (function(module) {
+
+var DOCUMENT_NODE_TYPE = 9;
+
+/**
+ * A polyfill for Element.matches()
+ */
+if (typeof Element !== 'undefined' && !Element.prototype.matches) {
+    var proto = Element.prototype;
+
+    proto.matches = proto.matchesSelector ||
+                    proto.mozMatchesSelector ||
+                    proto.msMatchesSelector ||
+                    proto.oMatchesSelector ||
+                    proto.webkitMatchesSelector;
+}
+
+/**
+ * Finds the closest parent that matches a selector.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @return {Function}
+ */
+function closest (element, selector) {
+    while (element && element.nodeType !== DOCUMENT_NODE_TYPE) {
+        if (typeof element.matches === 'function' &&
+            element.matches(selector)) {
+          return element;
+        }
+        element = element.parentNode;
+    }
+}
+
+module.exports = closest;
+
+
+/***/ }),
+
+/***/ "./node_modules/delegate/src/delegate.js":
+/*!***********************************************!*\
+  !*** ./node_modules/delegate/src/delegate.js ***!
+  \***********************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var closest = __webpack_require__(/*! ./closest */ "./node_modules/delegate/src/closest.js");
+
+/**
+ * Delegates event to a selector.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @param {Boolean} useCapture
+ * @return {Object}
+ */
+function delegate(element, selector, type, callback, useCapture) {
+    var listenerFn = listener.apply(this, arguments);
+
+    element.addEventListener(type, listenerFn, useCapture);
+
+    return {
+        destroy: function() {
+            element.removeEventListener(type, listenerFn, useCapture);
+        }
+    }
+}
+
+/**
+ * Finds closest match and invokes callback.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Function}
+ */
+function listener(element, selector, type, callback) {
+    return function(e) {
+        e.delegateTarget = closest(e.target, selector);
+
+        if (e.delegateTarget) {
+            callback.call(element, e);
+        }
+    }
+}
+
+module.exports = delegate;
 
 
 /***/ }),
@@ -5518,6 +5639,388 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/scrollmagic-plugin-gsap/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/scrollmagic-plugin-gsap/index.js ***!
+  \*******************************************************/
+/***/ (function(module) {
+
+/*!
+ * @file ScrollMagic GSAP Animation Plugin.
+ *
+ * requires: GSAP ~1.14
+ * Powered by the Greensock Animation Platform (GSAP): http://www.greensock.com/js
+ * Greensock License info at http://www.greensock.com/licensing/
+ */
+/**
+ * This plugin is meant to be used in conjunction with the Greensock Animation Plattform.
+ * It offers an easy API to trigger Tweens or synchronize them to the scrollbar movement.
+ *
+ * Both the `lite` and the `max` versions of the GSAP library are supported.
+ * The most basic requirement is `TweenLite`.
+ *
+ * To have access to this extension, please include `plugins/animation.gsap.js`.
+ * @requires {@link http://greensock.com/gsap|GSAP ~1.14.x}
+ * @mixin animation.GSAP
+ */
+var ScrollMagicPluginGsap = function(ScrollMagic, TweenMax, Timeline) {
+    var Tween = TweenMax;
+    var NAMESPACE = "animation.gsap";
+
+    // (BUILD) - REMOVE IN MINIFY - START
+    var console = window.console || {},
+        err = Function.prototype.bind.call(
+            console.error || console.log || function() {},
+            console
+        );
+    if (!ScrollMagic) {
+        err(
+            "(" +
+                NAMESPACE +
+                ") -> ERROR: The ScrollMagic main module could not be found. Please make sure it's loaded before this plugin or use an asynchronous loader like requirejs."
+        );
+    }
+    if (!Tween) {
+        err(
+            "(" +
+                NAMESPACE +
+                ") -> ERROR: TweenLite or TweenMax could not be found. Please make sure GSAP is loaded before ScrollMagic or use an asynchronous loader like requirejs."
+        );
+    }
+    // (BUILD) - REMOVE IN MINIFY - END
+
+    /*
+     * ----------------------------------------------------------------
+     * Extensions for Scene
+     * ----------------------------------------------------------------
+     */
+    /**
+     * Every instance of ScrollMagic.Scene now accepts an additional option.  
+     * See {@link ScrollMagic.Scene} for a complete list of the standard options.
+     * @memberof! animation.GSAP#
+     * @method new ScrollMagic.Scene(options)
+     * @example
+     * var scene = new ScrollMagic.Scene({tweenChanges: true});
+     *
+     * @param {object} [options] - Options for the Scene. The options can be updated at any time.
+     * @param {boolean} [options.tweenChanges=false] - Tweens Animation to the progress target instead of setting it.  
+                                                      Does not affect animations where duration is `0`.
+     */
+    /**
+     * **Get** or **Set** the tweenChanges option value.
+     * This only affects scenes with a duration. If `tweenChanges` is `true`, the progress update when scrolling will not be immediate, but instead the animation will smoothly animate to the target state.
+     * For a better understanding, try enabling and disabling this option in the [Scene Manipulation Example](../examples/basic/scene_manipulation.html).
+     * @memberof! animation.GSAP#
+     * @method Scene.tweenChanges
+     *
+     * @example
+     * // get the current tweenChanges option
+     * var tweenChanges = scene.tweenChanges();
+     *
+     * // set new tweenChanges option
+     * scene.tweenChanges(true);
+     *
+     * @fires {@link Scene.change}, when used as setter
+     * @param {boolean} [newTweenChanges] - The new tweenChanges setting of the scene.
+     * @returns {boolean} `get` -  Current tweenChanges option value.
+     * @returns {Scene} `set` -  Parent object for chaining.
+     */
+    // add option (TODO: DOC (private for dev))
+    ScrollMagic.Scene.addOption(
+        "tweenChanges", // name
+        false, // default
+        function(val) {
+            // validation callback
+            return !!val;
+        }
+    );
+    // extend scene
+    ScrollMagic.Scene.extend(function() {
+        var Scene = this,
+            _tween;
+
+        // (BUILD) - REMOVE IN MINIFY - START
+        var log = function() {
+            if (Scene._log) {
+                // not available, when main source minified
+                Array.prototype.splice.call(
+                    arguments,
+                    1,
+                    0,
+                    "(" + NAMESPACE + ")",
+                    "->"
+                );
+                Scene._log.apply(this, arguments);
+            }
+        };
+        // (BUILD) - REMOVE IN MINIFY - END
+
+        // set listeners
+        Scene.on("progress.plugin_gsap", function() {
+            updateTweenProgress();
+        });
+        Scene.on("destroy.plugin_gsap", function(e) {
+            Scene.removeTween(e.reset);
+        });
+
+        /**
+         * Update the tween progress to current position.
+         * @private
+         */
+        var updateTweenProgress = function() {
+            if (_tween) {
+                var progress = Scene.progress(),
+                    state = Scene.state();
+                if (_tween.repeat && _tween.repeat() === -1) {
+                    // infinite loop, so not in relation to progress
+                    if (state === "DURING" && _tween.paused()) {
+                        _tween.play();
+                    } else if (state !== "DURING" && !_tween.paused()) {
+                        _tween.pause();
+                    }
+                } else if (progress != _tween.progress()) {
+                    // do we even need to update the progress?
+                    // no infinite loop - so should we just play or go to a specific point in time?
+                    if (Scene.duration() === 0) {
+                        // play the animation
+                        if (progress > 0) {
+                            // play from 0 to 1
+                            _tween.play();
+                        } else {
+                            // play from 1 to 0
+                            _tween.reverse();
+                        }
+                    } else {
+                        // go to a specific point in time
+                        if (Scene.tweenChanges() && _tween.tweenTo) {
+                            // go smooth
+                            _tween.tweenTo(progress * _tween.duration());
+                        } else {
+                            // just hard set it
+                            _tween.progress(progress).pause();
+                        }
+                    }
+                }
+            }
+        };
+
+        /**
+         * Add a tween to the scene.
+         * If you want to add multiple tweens, add them into a GSAP Timeline object and supply it instead (see example below).
+         *
+         * If the scene has a duration, the tween's duration will be projected to the scroll distance of the scene, meaning its progress will be synced to scrollbar movement.
+         * For a scene with a duration of `0`, the tween will be triggered when scrolling forward past the scene's trigger position and reversed, when scrolling back.
+         * To gain better understanding, check out the [Simple Tweening example](../examples/basic/simple_tweening.html).
+         *
+         * Instead of supplying a tween this method can also be used as a shorthand for `TweenMax.to()` (see example below).
+         * @memberof! animation.GSAP#
+         *
+         * @example
+         * // add a single tween directly
+         * scene.setTween(TweenMax.to("obj"), 1, {x: 100});
+         *
+         * // add a single tween via variable
+         * var tween = TweenMax.to("obj"), 1, {x: 100};
+         * scene.setTween(tween);
+         *
+         * // add multiple tweens, wrapped in a timeline.
+         * var timeline = new TimelineMax();
+         * var tween1 = TweenMax.from("obj1", 1, {x: 100});
+         * var tween2 = TweenMax.to("obj2", 1, {y: 100});
+         * timeline
+         *      .add(tween1)
+         *      .add(tween2);
+         * scene.addTween(timeline);
+         *
+         * // short hand to add a TweenMax.to() tween
+         * scene.setTween("obj3", 0.5, {y: 100});
+         *
+         * // short hand to add a TweenMax.to() tween for 1 second
+         * // this is useful, when the scene has a duration and the tween duration isn't important anyway
+         * scene.setTween("obj3", {y: 100});
+         *
+         * @param {(object|string)} TweenObject - A TweenMax, TweenLite, TimelineMax or TimelineLite object that should be animated in the scene. Can also be a Dom Element or Selector, when using direct tween definition (see examples).
+         * @param {(number|object)} duration - A duration for the tween, or tween parameters. If an object containing parameters are supplied, a default duration of 1 will be used.
+         * @param {object} params - The parameters for the tween
+         * @returns {Scene} Parent object for chaining.
+         */
+        Scene.setTween = function(TweenObject, duration, params) {
+            var newTween;
+            if (arguments.length > 1) {
+                if (arguments.length < 3) {
+                    params = duration;
+                    duration = 1;
+                }
+                TweenObject = Tween.to(TweenObject, duration, params);
+            }
+            try {
+                // wrap Tween into a Timeline Object if available to include delay and repeats in the duration and standardize methods.
+                if (Timeline) {
+                    newTween = new Timeline({ smoothChildTiming: true }).add(
+                        TweenObject
+                    );
+                } else {
+                    newTween = TweenObject;
+                }
+                newTween.pause();
+            } catch (e) {
+                log(
+                    1,
+                    "ERROR calling method 'setTween()': Supplied argument is not a valid TweenObject"
+                );
+                return Scene;
+            }
+            if (_tween) {
+                // kill old tween?
+                Scene.removeTween();
+            }
+            _tween = newTween;
+
+            // some properties need to be transferred it to the wrapper, otherwise they would get lost.
+            if (TweenObject.repeat && TweenObject.repeat() === -1) {
+                // TweenMax or TimelineMax Object?
+                _tween.repeat(-1);
+                _tween.yoyo(TweenObject.yoyo());
+            }
+            // (BUILD) - REMOVE IN MINIFY - START
+            // Some tween validations and debugging helpers
+
+            if (Scene.tweenChanges() && !_tween.tweenTo) {
+                log(
+                    2,
+                    "WARNING: tweenChanges will only work if the TimelineMax object is available for ScrollMagic."
+                );
+            }
+
+            // check if there are position tweens defined for the trigger and warn about it :)
+            if (
+                _tween &&
+                Scene.controller() &&
+                Scene.triggerElement() &&
+                Scene.loglevel() >= 2
+            ) {
+                // controller is needed to know scroll direction.
+                var triggerTweens = Tween.getTweensOf(Scene.triggerElement()),
+                    vertical = Scene.controller().info("vertical");
+                triggerTweens.forEach(function(value, index) {
+                    var tweenvars = value.vars.css || value.vars,
+                        condition = vertical
+                            ? tweenvars.top !== undefined ||
+                              tweenvars.bottom !== undefined
+                            : tweenvars.left !== undefined ||
+                              tweenvars.right !== undefined;
+                    if (condition) {
+                        log(
+                            2,
+                            "WARNING: Tweening the position of the trigger element affects the scene timing and should be avoided!"
+                        );
+                        return false;
+                    }
+                });
+            }
+
+            // warn about tween overwrites, when an element is tweened multiple times
+            if (parseFloat(Tween.version) >= 1.14) {
+                // onOverwrite only present since GSAP v1.14.0
+                var list = _tween.getChildren
+                        ? _tween.getChildren(true, true, false)
+                        : [_tween], // get all nested tween objects
+                    newCallback = function() {
+                        log(
+                            2,
+                            "WARNING: tween was overwritten by another. To learn how to avoid this issue see here: https://github.com/janpaepke/ScrollMagic/wiki/WARNING:-tween-was-overwritten-by-another"
+                        );
+                    };
+                for (var i = 0, thisTween, oldCallback; i < list.length; i++) {
+                    /*jshint loopfunc: true */
+                    thisTween = list[i];
+                    if (oldCallback !== newCallback) {
+                        // if tweens is added more than once
+                        oldCallback = thisTween.vars.onOverwrite;
+                        thisTween.vars.onOverwrite = function() {
+                            if (oldCallback) {
+                                oldCallback.apply(this, arguments);
+                            }
+                            newCallback.apply(this, arguments);
+                        };
+                    }
+                }
+            }
+            // (BUILD) - REMOVE IN MINIFY - END
+            log(3, "added tween");
+
+            updateTweenProgress();
+            return Scene;
+        };
+
+        /**
+         * Remove the tween from the scene.
+         * This will terminate the control of the Scene over the tween.
+         *
+         * Using the reset option you can decide if the tween should remain in the current state or be rewound to set the target elements back to the state they were in before the tween was added to the scene.
+         * @memberof! animation.GSAP#
+         *
+         * @example
+         * // remove the tween from the scene without resetting it
+         * scene.removeTween();
+         *
+         * // remove the tween from the scene and reset it to initial position
+         * scene.removeTween(true);
+         *
+         * @param {boolean} [reset=false] - If `true` the tween will be reset to its initial values.
+         * @returns {Scene} Parent object for chaining.
+         */
+        Scene.removeTween = function(reset) {
+            if (_tween) {
+                if (reset) {
+                    _tween.progress(0).pause();
+                }
+                _tween.kill();
+                _tween = undefined;
+                log(
+                    3,
+                    "removed tween (reset: " + (reset ? "true" : "false") + ")"
+                );
+            }
+            return Scene;
+        };
+    });
+};
+
+module.exports = { ScrollMagicPluginGsap : ScrollMagicPluginGsap };
+
+
+/***/ }),
+
+/***/ "./node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js ***!
+  \**************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! ScrollMagic v2.0.8 | (c) 2020 Jan Paepke (@janpaepke) | license & info: http://scrollmagic.io */
+!function(e,t){ true?!(__WEBPACK_AMD_DEFINE_FACTORY__ = (t),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+		__WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):0}(this,function(){"use strict";function _(){}_.version="2.0.8","undefined"!=typeof window&&window.addEventListener("mousewheel",void 0);var P="data-scrollmagic-pin-spacer";_.Controller=function(e){function t(){var e,t,n;v&&u&&(e=R.type.Array(u)?u:f.slice(0),u=!1,t=d,0!=(n=(d=l.scrollPos())-t)&&(h=0<n?"FORWARD":i),h===i&&e.reverse(),e.forEach(function(e,t){e.update(!0)}))}function r(){n=R.rAF(t)}var n,o,i="REVERSE",s="PAUSED",a=z.defaults,l=this,c=R.extend({},a,e),f=[],u=!1,d=0,h=s,p=!0,g=0,v=!0,m=function(){0<c.refreshInterval&&(o=window.setTimeout(E,c.refreshInterval))},w=function(){return c.vertical?R.get.scrollTop(c.container):R.get.scrollLeft(c.container)},y=function(){return c.vertical?R.get.height(c.container):R.get.width(c.container)},S=this._setScrollPos=function(e){c.vertical?p?window.scrollTo(R.get.scrollLeft(),e):c.container.scrollTop=e:p?window.scrollTo(e,R.get.scrollTop()):c.container.scrollLeft=e},b=function(e){"resize"==e.type&&(g=y(),h=s),!0!==u&&(u=!0,r())},E=function(){if(!p&&g!=y()){var t;try{t=new Event("resize",{bubbles:!1,cancelable:!1})}catch(e){(t=document.createEvent("Event")).initEvent("resize",!1,!1)}c.container.dispatchEvent(t)}f.forEach(function(e,t){e.refresh()}),m()};this._options=c;function x(e){if(e.length<=1)return e;var t=e.slice(0);return t.sort(function(e,t){return e.scrollOffset()>t.scrollOffset()?1:-1}),t}return this.addScene=function(e){if(R.type.Array(e))e.forEach(function(e,t){l.addScene(e)});else if(e instanceof _.Scene)if(e.controller()!==l)e.addTo(l);else if(!~f.indexOf(e))for(var t in f.push(e),f=x(f),e.on("shift.controller_sort",function(){f=x(f)}),c.globalSceneOptions)e[t]&&e[t].call(e,c.globalSceneOptions[t]);return l},this.removeScene=function(e){var t;return R.type.Array(e)?e.forEach(function(e,t){l.removeScene(e)}):-1<(t=f.indexOf(e))&&(e.off("shift.controller_sort"),f.splice(t,1),e.remove()),l},this.updateScene=function(e,n){return R.type.Array(e)?e.forEach(function(e,t){l.updateScene(e,n)}):n?e.update(!0):!0!==u&&e instanceof _.Scene&&(~(u=u||[]).indexOf(e)||u.push(e),u=x(u),r()),l},this.update=function(e){return b({type:"resize"}),e&&t(),l},this.scrollTo=function(e,t){if(R.type.Number(e))S.call(c.container,e,t);else if(e instanceof _.Scene)e.controller()===l&&l.scrollTo(e.scrollOffset(),t);else if(R.type.Function(e))S=e;else{var n=R.get.elements(e)[0];if(n){for(;n.parentNode.hasAttribute(P);)n=n.parentNode;var r=c.vertical?"top":"left",o=R.get.offset(c.container),i=R.get.offset(n);p||(o[r]-=l.scrollPos()),l.scrollTo(i[r]-o[r],t)}}return l},this.scrollPos=function(e){return arguments.length?(R.type.Function(e)&&(w=e),l):w.call(l)},this.info=function(e){var t={size:g,vertical:c.vertical,scrollPos:d,scrollDirection:h,container:c.container,isDocument:p};return arguments.length?void 0!==t[e]?t[e]:void 0:t},this.loglevel=function(e){return l},this.enabled=function(e){return arguments.length?(v!=e&&(v=!!e,l.updateScene(f,!0)),l):v},this.destroy=function(e){window.clearTimeout(o);for(var t=f.length;t--;)f[t].destroy(e);return c.container.removeEventListener("resize",b),c.container.removeEventListener("scroll",b),R.cAF(n),null},function(){for(var e in c)a.hasOwnProperty(e)||delete c[e];if(c.container=R.get.elements(c.container)[0],!c.container)throw"ScrollMagic.Controller init failed.";(p=c.container===window||c.container===document.body||!document.body.contains(c.container))&&(c.container=window),g=y(),c.container.addEventListener("resize",b),c.container.addEventListener("scroll",b);var t=parseInt(c.refreshInterval,10);c.refreshInterval=R.type.Number(t)?t:a.refreshInterval,m()}(),l};var z={defaults:{container:window,vertical:!0,globalSceneOptions:{},loglevel:2,refreshInterval:100}};_.Controller.addOption=function(e,t){z.defaults[e]=t},_.Controller.extend=function(e){var t=this;_.Controller=function(){return t.apply(this,arguments),this.$super=R.extend({},this),e.apply(this,arguments)||this},R.extend(_.Controller,t),_.Controller.prototype=t.prototype,_.Controller.prototype.constructor=_.Controller},_.Scene=function(e){var n,l,c="BEFORE",f="DURING",u="AFTER",r=D.defaults,d=this,h=R.extend({},r,e),p=c,g=0,a={start:0,end:0},v=0,o=!0,s={};this.on=function(e,o){return R.type.Function(o)&&(e=e.trim().split(" ")).forEach(function(e){var t=e.split("."),n=t[0],r=t[1];"*"!=n&&(s[n]||(s[n]=[]),s[n].push({namespace:r||"",callback:o}))}),d},this.off=function(e,i){return e&&(e=e.trim().split(" ")).forEach(function(e,t){var n=e.split("."),r=n[0],o=n[1]||"";("*"===r?Object.keys(s):[r]).forEach(function(e){for(var t=s[e]||[],n=t.length;n--;){var r=t[n];!r||o!==r.namespace&&"*"!==o||i&&i!=r.callback||t.splice(n,1)}t.length||delete s[e]})}),d},this.trigger=function(e,n){var t,r,o,i;return e&&(t=e.trim().split("."),r=t[0],o=t[1],(i=s[r])&&i.forEach(function(e,t){o&&o!==e.namespace||e.callback.call(d,new _.Event(r,e.namespace,d,n))})),d},d.on("change.internal",function(e){"loglevel"!==e.what&&"tweenChanges"!==e.what&&("triggerElement"===e.what?y():"reverse"===e.what&&d.update())}).on("shift.internal",function(e){t(),d.update()}),this.addTo=function(e){return e instanceof _.Controller&&l!=e&&(l&&l.removeScene(d),l=e,E(),i(!0),y(!0),t(),l.info("container").addEventListener("resize",S),e.addScene(d),d.trigger("add",{controller:l}),d.update()),d},this.enabled=function(e){return arguments.length?(o!=e&&(o=!!e,d.update(!0)),d):o},this.remove=function(){var e;return l&&(l.info("container").removeEventListener("resize",S),e=l,l=void 0,e.removeScene(d),d.trigger("remove")),d},this.destroy=function(e){return d.trigger("destroy",{reset:e}),d.remove(),d.off("*.*"),null},this.update=function(e){var t,n;return l&&(e?l.enabled()&&o?(t=l.info("scrollPos"),n=0<h.duration?(t-a.start)/(a.end-a.start):t>=a.start?1:0,d.trigger("update",{startPos:a.start,endPos:a.end,scrollPos:t}),d.progress(n)):m&&p===f&&T(!0):l.updateScene(d,!1)),d},this.refresh=function(){return i(),y(),d},this.progress=function(e){if(arguments.length){var t,n,r,o=!1,i=p,s=l?l.info("scrollDirection"):"PAUSED",a=h.reverse||g<=e;return 0===h.duration?(o=g!=e,p=0===(g=e<1&&a?0:1)?c:f):e<0&&p!==c&&a?(p=c,o=!(g=0)):0<=e&&e<1&&a?(g=e,p=f,o=!0):1<=e&&p!==u?(g=1,p=u,o=!0):p!==f||a||T(),o&&(t={progress:g,state:p,scrollDirection:s},r=function(e){d.trigger(e,t)},(n=p!=i)&&i!==f&&(r("enter"),r(i===c?"start":"end")),r("progress"),n&&p!==f&&(r(p===c?"start":"end"),r("leave"))),d}return g};var m,w,t=function(){a={start:v+h.offset},l&&h.triggerElement&&(a.start-=l.info("size")*h.triggerHook),a.end=a.start+h.duration},i=function(e){var t;!n||x(t="duration",n.call(d))&&!e&&(d.trigger("change",{what:t,newval:h[t]}),d.trigger("shift",{reason:t}))},y=function(e){var t=0,n=h.triggerElement;if(l&&(n||0<v)){if(n)if(n.parentNode){for(var r=l.info(),o=R.get.offset(r.container),i=r.vertical?"top":"left";n.parentNode.hasAttribute(P);)n=n.parentNode;var s=R.get.offset(n);r.isDocument||(o[i]-=l.scrollPos()),t=s[i]-o[i]}else d.triggerElement(void 0);var a=t!=v;v=t,a&&!e&&d.trigger("shift",{reason:"triggerElementPosition"})}},S=function(e){0<h.triggerHook&&d.trigger("shift",{reason:"containerResize"})},b=R.extend(D.validate,{duration:function(t){var e;if(R.type.String(t)&&t.match(/^(\.|\d)*\d+%$/)&&(e=parseFloat(t)/100,t=function(){return l?l.info("size")*e:0}),R.type.Function(t)){n=t;try{t=parseFloat(n.call(d))}catch(e){t=-1}}if(t=parseFloat(t),!R.type.Number(t)||t<0)throw n=n&&void 0,0;return t}}),E=function(e){(e=arguments.length?[e]:Object.keys(b)).forEach(function(t,e){var n;if(b[t])try{n=b[t](h[t])}catch(e){n=r[t]}finally{h[t]=n}})},x=function(e,t){var n=!1,r=h[e];return h[e]!=t&&(h[e]=t,E(e),n=r!=h[e]),n},z=function(t){d[t]||(d[t]=function(e){return arguments.length?("duration"===t&&(n=void 0),x(t,e)&&(d.trigger("change",{what:t,newval:h[t]}),~D.shifts.indexOf(t)&&d.trigger("shift",{reason:t})),d):h[t]})};this.controller=function(){return l},this.state=function(){return p},this.scrollOffset=function(){return a.start},this.triggerPosition=function(){var e=h.offset;return l&&(h.triggerElement?e+=v:e+=l.info("size")*d.triggerHook()),e},d.on("shift.internal",function(e){var t="duration"===e.reason;(p===u&&t||p===f&&0===h.duration)&&T(),t&&A()}).on("progress.internal",function(e){T()}).on("add.internal",function(e){A()}).on("destroy.internal",function(e){d.removePin(e.reset)});function C(){l&&m&&p===f&&!l.info("isDocument")&&T()}function F(){l&&m&&p===f&&((w.relSize.width||w.relSize.autoFullWidth)&&R.get.width(window)!=R.get.width(w.spacer.parentNode)||w.relSize.height&&R.get.height(window)!=R.get.height(w.spacer.parentNode))&&A()}function L(e){l&&m&&p===f&&!l.info("isDocument")&&(e.preventDefault(),l._setScrollPos(l.info("scrollPos")-((e.wheelDelta||e[l.info("vertical")?"wheelDeltaY":"wheelDeltaX"])/3||30*-e.detail)))}var T=function(e){var t,n,r,o,i,s;m&&l&&(t=l.info(),n=w.spacer.firstChild,e||p!==f?(r={position:w.inFlow?"relative":"absolute",top:0,left:0},o=R.css(n,"position")!=r.position,w.pushFollowers?0<h.duration&&(p===u&&0===parseFloat(R.css(w.spacer,"padding-top"))||p===c&&0===parseFloat(R.css(w.spacer,"padding-bottom")))&&(o=!0):r[t.vertical?"top":"left"]=h.duration*g,R.css(n,r),o&&A()):("fixed"!=R.css(n,"position")&&(R.css(n,{position:"fixed"}),A()),i=R.get.offset(w.spacer,!0),s=h.reverse||0===h.duration?t.scrollPos-a.start:Math.round(g*h.duration*10)/10,i[t.vertical?"top":"left"]+=s,R.css(w.spacer.firstChild,{top:i.top,left:i.left})))},A=function(){var e,t,n,r,o;m&&l&&w.inFlow&&(e=p===f,t=l.info("vertical"),n=w.spacer.firstChild,r=R.isMarginCollapseType(R.css(w.spacer,"display")),o={},w.relSize.width||w.relSize.autoFullWidth?e?R.css(m,{width:R.get.width(w.spacer)}):R.css(m,{width:"100%"}):(o["min-width"]=R.get.width(t?m:n,!0,!0),o.width=e?o["min-width"]:"auto"),w.relSize.height?e?R.css(m,{height:R.get.height(w.spacer)-(w.pushFollowers?h.duration:0)}):R.css(m,{height:"100%"}):(o["min-height"]=R.get.height(t?n:m,!0,!r),o.height=e?o["min-height"]:"auto"),w.pushFollowers&&(o["padding"+(t?"Top":"Left")]=h.duration*g,o["padding"+(t?"Bottom":"Right")]=h.duration*(1-g)),R.css(w.spacer,o))};this.setPin=function(e,t){if(t=R.extend({},{pushFollowers:!0,spacerClass:"scrollmagic-pin-spacer"},t),!(e=R.get.elements(e)[0]))return d;if("fixed"===R.css(e,"position"))return d;if(m){if(m===e)return d;d.removePin()}var n=(m=e).parentNode.style.display,r=["top","left","bottom","right","margin","marginLeft","marginRight","marginTop","marginBottom"];m.parentNode.style.display="none";var o="absolute"!=R.css(m,"position"),i=R.css(m,r.concat(["display"])),s=R.css(m,["width","height"]);m.parentNode.style.display=n,!o&&t.pushFollowers&&(t.pushFollowers=!1);var a,l=m.parentNode.insertBefore(document.createElement("div"),m),c=R.extend(i,{position:o?"relative":"absolute",boxSizing:"content-box",mozBoxSizing:"content-box",webkitBoxSizing:"content-box"});return o||R.extend(c,R.css(m,["width","height"])),R.css(l,c),l.setAttribute(P,""),R.addClass(l,t.spacerClass),w={spacer:l,relSize:{width:"%"===s.width.slice(-1),height:"%"===s.height.slice(-1),autoFullWidth:"auto"===s.width&&o&&R.isMarginCollapseType(i.display)},pushFollowers:t.pushFollowers,inFlow:o},m.___origStyle||(m.___origStyle={},a=m.style,r.concat(["width","height","position","boxSizing","mozBoxSizing","webkitBoxSizing"]).forEach(function(e){m.___origStyle[e]=a[e]||""})),w.relSize.width&&R.css(l,{width:s.width}),w.relSize.height&&R.css(l,{height:s.height}),l.appendChild(m),R.css(m,{position:o?"relative":"absolute",margin:"auto",top:"auto",left:"auto",bottom:"auto",right:"auto"}),(w.relSize.width||w.relSize.autoFullWidth)&&R.css(m,{boxSizing:"border-box",mozBoxSizing:"border-box",webkitBoxSizing:"border-box"}),window.addEventListener("scroll",C),window.addEventListener("resize",C),window.addEventListener("resize",F),m.addEventListener("mousewheel",L),m.addEventListener("DOMMouseScroll",L),T(),d},this.removePin=function(e){var t,n,r;return m&&(p===f&&T(!0),!e&&l||((t=w.spacer.firstChild).hasAttribute(P)&&(n=w.spacer.style,r={},["margin","marginLeft","marginRight","marginTop","marginBottom"].forEach(function(e){r[e]=n[e]||""}),R.css(t,r)),w.spacer.parentNode.insertBefore(t,w.spacer),w.spacer.parentNode.removeChild(w.spacer),m.parentNode.hasAttribute(P)||(R.css(m,m.___origStyle),delete m.___origStyle)),window.removeEventListener("scroll",C),window.removeEventListener("resize",C),window.removeEventListener("resize",F),m.removeEventListener("mousewheel",L),m.removeEventListener("DOMMouseScroll",L),m=void 0),d};var N,O=[];return d.on("destroy.internal",function(e){d.removeClassToggle(e.reset)}),this.setClassToggle=function(e,t){var n=R.get.elements(e);return 0!==n.length&&R.type.String(t)&&(0<O.length&&d.removeClassToggle(),N=t,O=n,d.on("enter.internal_class leave.internal_class",function(e){var n="enter"===e.type?R.addClass:R.removeClass;O.forEach(function(e,t){n(e,N)})})),d},this.removeClassToggle=function(e){return e&&O.forEach(function(e,t){R.removeClass(e,N)}),d.off("start.internal_class end.internal_class"),N=void 0,O=[],d},function(){for(var e in h)r.hasOwnProperty(e)||delete h[e];for(var t in r)z(t);E()}(),d};var D={defaults:{duration:0,offset:0,triggerElement:void 0,triggerHook:.5,reverse:!0,loglevel:2},validate:{offset:function(e){if(e=parseFloat(e),!R.type.Number(e))throw 0;return e},triggerElement:function(e){if(e=e||void 0){var t=R.get.elements(e)[0];if(!t||!t.parentNode)throw 0;e=t}return e},triggerHook:function(e){var t={onCenter:.5,onEnter:1,onLeave:0};if(R.type.Number(e))e=Math.max(0,Math.min(parseFloat(e),1));else{if(!(e in t))throw 0;e=t[e]}return e},reverse:function(e){return!!e}},shifts:["duration","offset","triggerHook"]};_.Scene.addOption=function(e,t,n,r){e in D.defaults||(D.defaults[e]=t,D.validate[e]=n,r&&D.shifts.push(e))},_.Scene.extend=function(e){var t=this;_.Scene=function(){return t.apply(this,arguments),this.$super=R.extend({},this),e.apply(this,arguments)||this},R.extend(_.Scene,t),_.Scene.prototype=t.prototype,_.Scene.prototype.constructor=_.Scene},_.Event=function(e,t,n,r){for(var o in r=r||{})this[o]=r[o];return this.type=e,this.target=this.currentTarget=n,this.namespace=t||"",this.timeStamp=this.timestamp=Date.now(),this};var R=_._util=function(s){function a(e){return parseFloat(e)||0}function l(e){return e.currentStyle?e.currentStyle:s.getComputedStyle(e)}function r(e,t,n,r){if((t=t===document?s:t)===s)r=!1;else if(!u.DomElement(t))return 0;e=e[0].toUpperCase()+e.substr(1).toLowerCase();var o,i=(n?t["offset"+e]||t["outer"+e]:t["client"+e]||t["inner"+e])||0;return n&&r&&(o=l(t),i+="Height"===e?a(o.marginTop)+a(o.marginBottom):a(o.marginLeft)+a(o.marginRight)),i}function c(e){return e.replace(/^[^a-z]+([a-z])/g,"$1").replace(/-([a-z])/g,function(e){return e[1].toUpperCase()})}var e={};e.extend=function(e){for(e=e||{},f=1;f<arguments.length;f++)if(arguments[f])for(var t in arguments[f])arguments[f].hasOwnProperty(t)&&(e[t]=arguments[f][t]);return e},e.isMarginCollapseType=function(e){return!!~["block","flex","list-item","table","-webkit-box"].indexOf(e)};for(var o=0,t=["ms","moz","webkit","o"],n=s.requestAnimationFrame,i=s.cancelAnimationFrame,f=0;!n&&f<4;++f)n=s[t[f]+"RequestAnimationFrame"],i=s[t[f]+"CancelAnimationFrame"]||s[t[f]+"CancelRequestAnimationFrame"];n=n||function(e){var t=(new Date).getTime(),n=Math.max(0,16-(t-o)),r=s.setTimeout(function(){e(t+n)},n);return o=t+n,r},i=i||function(e){s.clearTimeout(e)},e.rAF=n.bind(s),e.cAF=i.bind(s);var u=e.type=function(e){return Object.prototype.toString.call(e).replace(/^\[object (.+)\]$/,"$1").toLowerCase()};u.String=function(e){return"string"===u(e)},u.Function=function(e){return"function"===u(e)},u.Array=function(e){return Array.isArray(e)},u.Number=function(e){return!u.Array(e)&&0<=e-parseFloat(e)+1},u.DomElement=function(e){return"object"==typeof HTMLElement||"function"==typeof HTMLElement?e instanceof HTMLElement||e instanceof SVGElement:e&&"object"==typeof e&&null!==e&&1===e.nodeType&&"string"==typeof e.nodeName};var d=e.get={};return d.elements=function(e){var t=[];if(u.String(e))try{e=document.querySelectorAll(e)}catch(e){return t}if("nodelist"===u(e)||u.Array(e)||e instanceof NodeList)for(var n=0,r=t.length=e.length;n<r;n++){var o=e[n];t[n]=u.DomElement(o)?o:d.elements(o)}else!u.DomElement(e)&&e!==document&&e!==s||(t=[e]);return t},d.scrollTop=function(e){return e&&"number"==typeof e.scrollTop?e.scrollTop:s.pageYOffset||0},d.scrollLeft=function(e){return e&&"number"==typeof e.scrollLeft?e.scrollLeft:s.pageXOffset||0},d.width=function(e,t,n){return r("width",e,t,n)},d.height=function(e,t,n){return r("height",e,t,n)},d.offset=function(e,t){var n,r={top:0,left:0};return e&&e.getBoundingClientRect&&(n=e.getBoundingClientRect(),r.top=n.top,r.left=n.left,t||(r.top+=d.scrollTop(),r.left+=d.scrollLeft())),r},e.addClass=function(e,t){t&&(e.classList?e.classList.add(t):e.className+=" "+t)},e.removeClass=function(e,t){t&&(e.classList?e.classList.remove(t):e.className=e.className.replace(RegExp("(^|\\b)"+t.split(" ").join("|")+"(\\b|$)","gi")," "))},e.css=function(e,t){if(u.String(t))return l(e)[c(t)];if(u.Array(t)){var n={},r=l(e);return t.forEach(function(e,t){n[e]=r[c(e)]}),n}for(var o in t){var i=t[o];i==parseFloat(i)&&(i+="px"),e.style[c(o)]=i}},e}(window||{});return _});
+
+/***/ }),
+
+/***/ "./node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js ***!
+  \******************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! ScrollMagic v2.0.8 | (c) 2020 Jan Paepke (@janpaepke) | license & info: http://scrollmagic.io */
+!function(e,r){ true?!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ScrollMagic */ "./node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (r),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):0}(this,function(i){"use strict";var o="0.85em",n="9999",v=i._util,h=0;i.Scene.extend(function(){var t,i=this;i.addIndicators=function(e){var r;return t||(r={name:"",indent:0,parent:void 0,colorStart:"green",colorEnd:"red",colorTrigger:"blue"},e=v.extend({},r,e),h++,t=new s(i,e),i.on("add.plugin_addIndicators",t.add),i.on("remove.plugin_addIndicators",t.remove),i.on("destroy.plugin_addIndicators",i.removeIndicators),i.controller()&&t.add()),i},i.removeIndicators=function(){return t&&(t.remove(),this.off("*.plugin_addIndicators"),t=void 0),i}}),i.Controller.addOption("addIndicators",!1),i.Controller.extend(function(){var c=this,e=c.info(),l=e.container,f=e.isDocument,m=e.vertical,h={groups:[]};this._indicators=h;function r(){h.updateBoundsPositions()}function t(){h.updateTriggerGroupPositions()}return l.addEventListener("resize",t),f||(window.addEventListener("resize",t),window.addEventListener("scroll",t)),l.addEventListener("resize",r),l.addEventListener("scroll",r),this._indicators.updateBoundsPositions=function(e){for(var r,t,i,o=e?[v.extend({},e.triggerGroup,{members:[e]})]:h.groups,n=o.length,s={},d=m?"left":"top",a=m?"width":"height",g=m?v.get.scrollLeft(l)+v.get.width(l)-15:v.get.scrollTop(l)+v.get.height(l)-15;n--;)for(r=(i=o[n]).members.length,t=v.get[a](i.element.firstChild);r--;)s[d]=g-t,v.css(i.members[r].bounds,s)},this._indicators.updateTriggerGroupPositions=function(e){for(var r,t,i,o,n=e?[e]:h.groups,s=n.length,d=f?document.body:l,a=f?{top:0,left:0}:v.get.offset(d,!0),g=m?v.get.width(l)-15:v.get.height(l)-15,p=m?"width":"height",u=m?"Y":"X";s--;)t=(r=n[s]).element,i=r.triggerHook*c.info("size"),o=v.get[p](t.firstChild.firstChild)<i?"translate"+u+"(-100%)":"",v.css(t,{top:a.top+(m?i:g-r.members[0].options.indent),left:a.left+(m?g-r.members[0].options.indent:i)}),v.css(t.firstChild.firstChild,{"-ms-transform":o,"-webkit-transform":o,transform:o})},this._indicators.updateTriggerGroupLabel=function(e){var r="trigger"+(1<e.members.length?"":" "+e.members[0].options.name),t=e.element.firstChild.firstChild;t.textContent!==r&&(t.textContent=r,m&&h.updateBoundsPositions())},this.addScene=function(e){this._options.addIndicators&&e instanceof i.Scene&&e.controller()===c&&e.addIndicators(),this.$super.addScene.apply(this,arguments)},this.destroy=function(){l.removeEventListener("resize",t),f||(window.removeEventListener("resize",t),window.removeEventListener("scroll",t)),l.removeEventListener("resize",r),l.removeEventListener("scroll",r),this.$super.destroy.apply(this,arguments)},c});var s=function(o,n){var s,d,a=this,t=b.bounds(),i=b.start(n.colorStart),g=b.end(n.colorEnd),p=n.parent&&v.get.elements(n.parent)[0];n.name=n.name||h,i.firstChild.textContent+=" "+n.name,g.textContent+=" "+n.name,t.appendChild(i),t.appendChild(g),a.options=n,a.bounds=t,a.triggerGroup=void 0,this.add=function(){d=o.controller(),s=d.info("vertical");var e=d.info("isDocument");p=p||(e?document.body:d.info("container")),e||"static"!==v.css(p,"position")||v.css(p,{position:"relative"}),o.on("change.plugin_addIndicators",u),o.on("shift.plugin_addIndicators",r),m(),l(),setTimeout(function(){d._indicators.updateBoundsPositions(a)},0)},this.remove=function(){var e;a.triggerGroup&&(o.off("change.plugin_addIndicators",u),o.off("shift.plugin_addIndicators",r),1<a.triggerGroup.members.length?((e=a.triggerGroup).members.splice(e.members.indexOf(a),1),d._indicators.updateTriggerGroupLabel(e),d._indicators.updateTriggerGroupPositions(e),a.triggerGroup=void 0):f(),c())};var r=function(){l()},u=function(e){"triggerHook"===e.what&&m()},c=function(){t.parentNode.removeChild(t)},l=function(){var e;t.parentNode!==p&&(e=d.info("vertical"),v.css(i.firstChild,{"border-bottom-width":e?1:0,"border-right-width":e?0:1,bottom:e?-1:n.indent,right:e?n.indent:-1,padding:e?"0 8px":"2px 4px"}),v.css(g,{"border-top-width":e?1:0,"border-left-width":e?0:1,top:e?"100%":"",right:e?n.indent:"",bottom:e?"":n.indent,left:e?"":"100%",padding:e?"0 8px":"2px 4px"}),p.appendChild(t));var r={};r[s?"top":"left"]=o.triggerPosition(),r[s?"height":"width"]=o.duration(),v.css(t,r),v.css(g,{display:0<o.duration()?"":"none"})},f=function(){d._indicators.groups.splice(d._indicators.groups.indexOf(a.triggerGroup),1),a.triggerGroup.element.parentNode.removeChild(a.triggerGroup.element),a.triggerGroup=void 0},m=function(){var e=o.triggerHook();if(!(a.triggerGroup&&Math.abs(a.triggerGroup.triggerHook-e)<1e-4)){for(var r,t=d._indicators.groups,i=t.length;i--;)if(r=t[i],Math.abs(r.triggerHook-e)<1e-4)return a.triggerGroup&&(1===a.triggerGroup.members.length?f():(a.triggerGroup.members.splice(a.triggerGroup.members.indexOf(a),1),d._indicators.updateTriggerGroupLabel(a.triggerGroup),d._indicators.updateTriggerGroupPositions(a.triggerGroup))),r.members.push(a),a.triggerGroup=r,void d._indicators.updateTriggerGroupLabel(r);if(a.triggerGroup){if(1===a.triggerGroup.members.length)return a.triggerGroup.triggerHook=e,void d._indicators.updateTriggerGroupPositions(a.triggerGroup);a.triggerGroup.members.splice(a.triggerGroup.members.indexOf(a),1),d._indicators.updateTriggerGroupLabel(a.triggerGroup),d._indicators.updateTriggerGroupPositions(a.triggerGroup),a.triggerGroup=void 0}!function(){var e=b.trigger(n.colorTrigger),r={};r[s?"right":"bottom"]=0,r[s?"border-top-width":"border-left-width"]=1,v.css(e.firstChild,r),v.css(e.firstChild.firstChild,{padding:s?"0 8px 3px 8px":"3px 4px"}),document.body.appendChild(e);var t={triggerHook:o.triggerHook(),element:e,members:[a]};d._indicators.groups.push(t),a.triggerGroup=t,d._indicators.updateTriggerGroupLabel(t),d._indicators.updateTriggerGroupPositions(t)}()}}},b={start:function(e){var r=document.createElement("div");r.textContent="start",v.css(r,{position:"absolute",overflow:"visible","border-width":0,"border-style":"solid",color:e,"border-color":e});var t=document.createElement("div");return v.css(t,{position:"absolute",overflow:"visible",width:0,height:0}),t.appendChild(r),t},end:function(e){var r=document.createElement("div");return r.textContent="end",v.css(r,{position:"absolute",overflow:"visible","border-width":0,"border-style":"solid",color:e,"border-color":e}),r},bounds:function(){var e=document.createElement("div");return v.css(e,{position:"absolute",overflow:"visible","white-space":"nowrap","pointer-events":"none","font-size":o}),e.style.zIndex=n,e},trigger:function(e){var r=document.createElement("div");r.textContent="trigger",v.css(r,{position:"relative"});var t=document.createElement("div");v.css(t,{position:"absolute",overflow:"visible","border-width":0,"border-style":"solid",color:e,"border-color":e}),t.appendChild(r);var i=document.createElement("div");return v.css(i,{position:"fixed",overflow:"visible","white-space":"nowrap","pointer-events":"none","font-size":o}),i.style.zIndex=n,i.appendChild(t),i}}});
+
+/***/ }),
+
 /***/ "./node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js ***!
@@ -8340,6 +8843,1275 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 	return ScrollMagic;
 }));
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/Link.js":
+/*!***********************************************!*\
+  !*** ./node_modules/swup/lib/helpers/Link.js ***!
+  \***********************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Link = function () {
+	function Link(elementOrUrl) {
+		_classCallCheck(this, Link);
+
+		if (elementOrUrl instanceof Element || elementOrUrl instanceof SVGElement) {
+			this.link = elementOrUrl;
+		} else {
+			this.link = document.createElement('a');
+			this.link.href = elementOrUrl;
+		}
+	}
+
+	_createClass(Link, [{
+		key: 'getPath',
+		value: function getPath() {
+			var path = this.link.pathname;
+			if (path[0] !== '/') {
+				path = '/' + path;
+			}
+			return path;
+		}
+	}, {
+		key: 'getAddress',
+		value: function getAddress() {
+			var path = this.link.pathname + this.link.search;
+
+			if (this.link.getAttribute('xlink:href')) {
+				path = this.link.getAttribute('xlink:href');
+			}
+
+			if (path[0] !== '/') {
+				path = '/' + path;
+			}
+			return path;
+		}
+	}, {
+		key: 'getHash',
+		value: function getHash() {
+			return this.link.hash;
+		}
+	}]);
+
+	return Link;
+}();
+
+exports.default = Link;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/classify.js":
+/*!***************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/classify.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var classify = function classify(text) {
+	var output = text.toString().toLowerCase().replace(/\s+/g, '-') // Replace spaces with -
+	.replace(/\//g, '-') // Replace / with -
+	.replace(/[^\w\-]+/g, '') // Remove all non-word chars
+	.replace(/\-\-+/g, '-') // Replace multiple - with single -
+	.replace(/^-+/, '') // Trim - from start of text
+	.replace(/-+$/, ''); // Trim - from end of text
+	if (output[0] === '/') output = output.splice(1);
+	if (output === '') output = 'homepage';
+	return output;
+};
+
+exports.default = classify;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/createHistoryRecord.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/createHistoryRecord.js ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var createHistoryRecord = function createHistoryRecord(url) {
+	window.history.pushState({
+		url: url || window.location.href.split(window.location.hostname)[1],
+		random: Math.random(),
+		source: 'swup'
+	}, document.getElementsByTagName('title')[0].innerText, url || window.location.href.split(window.location.hostname)[1]);
+};
+
+exports.default = createHistoryRecord;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/fetch.js":
+/*!************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/fetch.js ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var fetch = function fetch(setOptions) {
+	var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	var defaults = {
+		url: window.location.pathname + window.location.search,
+		method: 'GET',
+		data: null,
+		headers: {}
+	};
+
+	var options = _extends({}, defaults, setOptions);
+
+	var request = new XMLHttpRequest();
+
+	request.onreadystatechange = function () {
+		if (request.readyState === 4) {
+			if (request.status !== 500) {
+				callback(request);
+			} else {
+				callback(request);
+			}
+		}
+	};
+
+	request.open(options.method, options.url, true);
+	Object.keys(options.headers).forEach(function (key) {
+		request.setRequestHeader(key, options.headers[key]);
+	});
+	request.send(options.data);
+	return request;
+};
+
+exports.default = fetch;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/getCurrentUrl.js":
+/*!********************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/getCurrentUrl.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var getCurrentUrl = function getCurrentUrl() {
+	return window.location.pathname + window.location.search;
+};
+
+exports.default = getCurrentUrl;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/getDataFromHtml.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/getDataFromHtml.js ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _utils = __webpack_require__(/*! ../utils */ "./node_modules/swup/lib/utils/index.js");
+
+var getDataFromHtml = function getDataFromHtml(html, containers) {
+	var fakeDom = document.createElement('html');
+	fakeDom.innerHTML = html;
+	var blocks = [];
+
+	var _loop = function _loop(i) {
+		if (fakeDom.querySelector(containers[i]) == null) {
+			// page in invalid
+			return {
+				v: null
+			};
+		} else {
+			(0, _utils.queryAll)(containers[i]).forEach(function (item, index) {
+				(0, _utils.queryAll)(containers[i], fakeDom)[index].setAttribute('data-swup', blocks.length); // marks element with data-swup
+				blocks.push((0, _utils.queryAll)(containers[i], fakeDom)[index].outerHTML);
+			});
+		}
+	};
+
+	for (var i = 0; i < containers.length; i++) {
+		var _ret = _loop(i);
+
+		if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	}
+
+	var json = {
+		title: fakeDom.querySelector('title').innerText,
+		pageClass: fakeDom.querySelector('body').className,
+		originalContent: html,
+		blocks: blocks
+	};
+
+	// to prevent memory leaks
+	fakeDom.innerHTML = '';
+	fakeDom = null;
+
+	return json;
+};
+
+exports.default = getDataFromHtml;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/index.js ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.Link = exports.markSwupElements = exports.getCurrentUrl = exports.transitionEnd = exports.fetch = exports.getDataFromHtml = exports.createHistoryRecord = exports.classify = undefined;
+
+var _classify = __webpack_require__(/*! ./classify */ "./node_modules/swup/lib/helpers/classify.js");
+
+var _classify2 = _interopRequireDefault(_classify);
+
+var _createHistoryRecord = __webpack_require__(/*! ./createHistoryRecord */ "./node_modules/swup/lib/helpers/createHistoryRecord.js");
+
+var _createHistoryRecord2 = _interopRequireDefault(_createHistoryRecord);
+
+var _getDataFromHtml = __webpack_require__(/*! ./getDataFromHtml */ "./node_modules/swup/lib/helpers/getDataFromHtml.js");
+
+var _getDataFromHtml2 = _interopRequireDefault(_getDataFromHtml);
+
+var _fetch = __webpack_require__(/*! ./fetch */ "./node_modules/swup/lib/helpers/fetch.js");
+
+var _fetch2 = _interopRequireDefault(_fetch);
+
+var _transitionEnd = __webpack_require__(/*! ./transitionEnd */ "./node_modules/swup/lib/helpers/transitionEnd.js");
+
+var _transitionEnd2 = _interopRequireDefault(_transitionEnd);
+
+var _getCurrentUrl = __webpack_require__(/*! ./getCurrentUrl */ "./node_modules/swup/lib/helpers/getCurrentUrl.js");
+
+var _getCurrentUrl2 = _interopRequireDefault(_getCurrentUrl);
+
+var _markSwupElements = __webpack_require__(/*! ./markSwupElements */ "./node_modules/swup/lib/helpers/markSwupElements.js");
+
+var _markSwupElements2 = _interopRequireDefault(_markSwupElements);
+
+var _Link = __webpack_require__(/*! ./Link */ "./node_modules/swup/lib/helpers/Link.js");
+
+var _Link2 = _interopRequireDefault(_Link);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var classify = exports.classify = _classify2.default;
+var createHistoryRecord = exports.createHistoryRecord = _createHistoryRecord2.default;
+var getDataFromHtml = exports.getDataFromHtml = _getDataFromHtml2.default;
+var fetch = exports.fetch = _fetch2.default;
+var transitionEnd = exports.transitionEnd = _transitionEnd2.default;
+var getCurrentUrl = exports.getCurrentUrl = _getCurrentUrl2.default;
+var markSwupElements = exports.markSwupElements = _markSwupElements2.default;
+var Link = exports.Link = _Link2.default;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/markSwupElements.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/markSwupElements.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _utils = __webpack_require__(/*! ../utils */ "./node_modules/swup/lib/utils/index.js");
+
+var markSwupElements = function markSwupElements(element, containers) {
+	var blocks = 0;
+
+	var _loop = function _loop(i) {
+		if (element.querySelector(containers[i]) == null) {
+			console.warn('Element ' + containers[i] + ' is not in current page.');
+		} else {
+			(0, _utils.queryAll)(containers[i]).forEach(function (item, index) {
+				(0, _utils.queryAll)(containers[i], element)[index].setAttribute('data-swup', blocks);
+				blocks++;
+			});
+		}
+	};
+
+	for (var i = 0; i < containers.length; i++) {
+		_loop(i);
+	}
+};
+
+exports.default = markSwupElements;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/helpers/transitionEnd.js":
+/*!********************************************************!*\
+  !*** ./node_modules/swup/lib/helpers/transitionEnd.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var transitionEnd = function transitionEnd() {
+	var el = document.createElement('div');
+
+	var transEndEventNames = {
+		WebkitTransition: 'webkitTransitionEnd',
+		MozTransition: 'transitionend',
+		OTransition: 'oTransitionEnd otransitionend',
+		transition: 'transitionend'
+	};
+
+	for (var name in transEndEventNames) {
+		if (el.style[name] !== undefined) {
+			return transEndEventNames[name];
+		}
+	}
+
+	return false;
+};
+
+exports.default = transitionEnd;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/swup/lib/index.js ***!
+  \****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+// modules
+
+
+var _delegate = __webpack_require__(/*! delegate */ "./node_modules/delegate/src/delegate.js");
+
+var _delegate2 = _interopRequireDefault(_delegate);
+
+var _Cache = __webpack_require__(/*! ./modules/Cache */ "./node_modules/swup/lib/modules/Cache.js");
+
+var _Cache2 = _interopRequireDefault(_Cache);
+
+var _loadPage = __webpack_require__(/*! ./modules/loadPage */ "./node_modules/swup/lib/modules/loadPage.js");
+
+var _loadPage2 = _interopRequireDefault(_loadPage);
+
+var _renderPage = __webpack_require__(/*! ./modules/renderPage */ "./node_modules/swup/lib/modules/renderPage.js");
+
+var _renderPage2 = _interopRequireDefault(_renderPage);
+
+var _triggerEvent = __webpack_require__(/*! ./modules/triggerEvent */ "./node_modules/swup/lib/modules/triggerEvent.js");
+
+var _triggerEvent2 = _interopRequireDefault(_triggerEvent);
+
+var _on = __webpack_require__(/*! ./modules/on */ "./node_modules/swup/lib/modules/on.js");
+
+var _on2 = _interopRequireDefault(_on);
+
+var _off = __webpack_require__(/*! ./modules/off */ "./node_modules/swup/lib/modules/off.js");
+
+var _off2 = _interopRequireDefault(_off);
+
+var _updateTransition = __webpack_require__(/*! ./modules/updateTransition */ "./node_modules/swup/lib/modules/updateTransition.js");
+
+var _updateTransition2 = _interopRequireDefault(_updateTransition);
+
+var _getAnimationPromises = __webpack_require__(/*! ./modules/getAnimationPromises */ "./node_modules/swup/lib/modules/getAnimationPromises.js");
+
+var _getAnimationPromises2 = _interopRequireDefault(_getAnimationPromises);
+
+var _getPageData = __webpack_require__(/*! ./modules/getPageData */ "./node_modules/swup/lib/modules/getPageData.js");
+
+var _getPageData2 = _interopRequireDefault(_getPageData);
+
+var _plugins = __webpack_require__(/*! ./modules/plugins */ "./node_modules/swup/lib/modules/plugins.js");
+
+var _utils = __webpack_require__(/*! ./utils */ "./node_modules/swup/lib/utils/index.js");
+
+var _helpers = __webpack_require__(/*! ./helpers */ "./node_modules/swup/lib/helpers/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Swup = function () {
+	function Swup(setOptions) {
+		_classCallCheck(this, Swup);
+
+		// default options
+		var defaults = {
+			animateHistoryBrowsing: false,
+			animationSelector: '[class*="transition-"]',
+			linkSelector: 'a[href^="' + window.location.origin + '"]:not([data-no-swup]), a[href^="/"]:not([data-no-swup]), a[href^="#"]:not([data-no-swup])',
+			cache: true,
+			containers: ['#swup'],
+			requestHeaders: {
+				'X-Requested-With': 'swup',
+				Accept: 'text/html, application/xhtml+xml'
+			},
+			plugins: [],
+			skipPopStateHandling: function skipPopStateHandling(event) {
+				return !(event.state && event.state.source === 'swup');
+			}
+		};
+
+		// merge options
+		var options = _extends({}, defaults, setOptions);
+
+		// handler arrays
+		this._handlers = {
+			animationInDone: [],
+			animationInStart: [],
+			animationOutDone: [],
+			animationOutStart: [],
+			animationSkipped: [],
+			clickLink: [],
+			contentReplaced: [],
+			disabled: [],
+			enabled: [],
+			openPageInNewTab: [],
+			pageLoaded: [],
+			pageRetrievedFromCache: [],
+			pageView: [],
+			popState: [],
+			samePage: [],
+			samePageWithHash: [],
+			serverError: [],
+			transitionStart: [],
+			transitionEnd: [],
+			willReplaceContent: []
+		};
+
+		// variable for id of element to scroll to after render
+		this.scrollToElement = null;
+		// variable for promise used for preload, so no new loading of the same page starts while page is loading
+		this.preloadPromise = null;
+		// variable for save options
+		this.options = options;
+		// variable for plugins array
+		this.plugins = [];
+		// variable for current transition object
+		this.transition = {};
+		// variable for keeping event listeners from "delegate"
+		this.delegatedListeners = {};
+		// so we are able to remove the listener
+		this.boundPopStateHandler = this.popStateHandler.bind(this);
+
+		// make modules accessible in instance
+		this.cache = new _Cache2.default();
+		this.cache.swup = this;
+		this.loadPage = _loadPage2.default;
+		this.renderPage = _renderPage2.default;
+		this.triggerEvent = _triggerEvent2.default;
+		this.on = _on2.default;
+		this.off = _off2.default;
+		this.updateTransition = _updateTransition2.default;
+		this.getAnimationPromises = _getAnimationPromises2.default;
+		this.getPageData = _getPageData2.default;
+		this.log = function () {}; // here so it can be used by plugins
+		this.use = _plugins.use;
+		this.unuse = _plugins.unuse;
+		this.findPlugin = _plugins.findPlugin;
+
+		// enable swup
+		this.enable();
+	}
+
+	_createClass(Swup, [{
+		key: 'enable',
+		value: function enable() {
+			var _this = this;
+
+			// check for Promise support
+			if (typeof Promise === 'undefined') {
+				console.warn('Promise is not supported');
+				return;
+			}
+
+			// add event listeners
+			this.delegatedListeners.click = (0, _delegate2.default)(document, this.options.linkSelector, 'click', this.linkClickHandler.bind(this));
+			window.addEventListener('popstate', this.boundPopStateHandler);
+
+			// initial save to cache
+			var page = (0, _helpers.getDataFromHtml)(document.documentElement.outerHTML, this.options.containers);
+			page.url = page.responseURL = (0, _helpers.getCurrentUrl)();
+			if (this.options.cache) {
+				this.cache.cacheUrl(page);
+			}
+
+			// mark swup blocks in html
+			(0, _helpers.markSwupElements)(document.documentElement, this.options.containers);
+
+			// mount plugins
+			this.options.plugins.forEach(function (plugin) {
+				_this.use(plugin);
+			});
+
+			// modify initial history record
+			window.history.replaceState(Object.assign({}, window.history.state, {
+				url: window.location.href,
+				random: Math.random(),
+				source: 'swup'
+			}), document.title, window.location.href);
+
+			// trigger enabled event
+			this.triggerEvent('enabled');
+
+			// add swup-enabled class to html tag
+			document.documentElement.classList.add('swup-enabled');
+
+			// trigger page view event
+			this.triggerEvent('pageView');
+		}
+	}, {
+		key: 'destroy',
+		value: function destroy() {
+			var _this2 = this;
+
+			// remove delegated listeners
+			this.delegatedListeners.click.destroy();
+
+			// remove popstate listener
+			window.removeEventListener('popstate', this.boundPopStateHandler);
+
+			// empty cache
+			this.cache.empty();
+
+			// unmount plugins
+			this.options.plugins.forEach(function (plugin) {
+				_this2.unuse(plugin);
+			});
+
+			// remove swup data atributes from blocks
+			(0, _utils.queryAll)('[data-swup]').forEach(function (element) {
+				element.removeAttribute('data-swup');
+			});
+
+			// remove handlers
+			this.off();
+
+			// trigger disable event
+			this.triggerEvent('disabled');
+
+			// remove swup-enabled class from html tag
+			document.documentElement.classList.remove('swup-enabled');
+		}
+	}, {
+		key: 'linkClickHandler',
+		value: function linkClickHandler(event) {
+			// no control key pressed
+			if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+				// index of pressed button needs to be checked because Firefox triggers click on all mouse buttons
+				if (event.button === 0) {
+					this.triggerEvent('clickLink', event);
+					event.preventDefault();
+					var link = new _helpers.Link(event.delegateTarget);
+					if (link.getAddress() == (0, _helpers.getCurrentUrl)() || link.getAddress() == '') {
+						// link to the same URL
+						if (link.getHash() != '') {
+							// link to the same URL with hash
+							this.triggerEvent('samePageWithHash', event);
+							var element = document.querySelector(link.getHash());
+							if (element != null) {
+								history.replaceState({
+									url: link.getAddress() + link.getHash(),
+									random: Math.random(),
+									source: 'swup'
+								}, document.title, link.getAddress() + link.getHash());
+							} else {
+								// referenced element not found
+								console.warn('Element for offset not found (' + link.getHash() + ')');
+							}
+						} else {
+							// link to the same URL without hash
+							this.triggerEvent('samePage', event);
+						}
+					} else {
+						// link to different url
+						if (link.getHash() != '') {
+							this.scrollToElement = link.getHash();
+						}
+
+						// get custom transition from data
+						var customTransition = event.delegateTarget.getAttribute('data-swup-transition');
+
+						// load page
+						this.loadPage({ url: link.getAddress(), customTransition: customTransition }, false);
+					}
+				}
+			} else {
+				// open in new tab (do nothing)
+				this.triggerEvent('openPageInNewTab', event);
+			}
+		}
+	}, {
+		key: 'popStateHandler',
+		value: function popStateHandler(event) {
+			if (this.options.skipPopStateHandling(event)) return;
+			var link = new _helpers.Link(event.state ? event.state.url : window.location.pathname);
+			if (link.getHash() !== '') {
+				this.scrollToElement = link.getHash();
+			} else {
+				event.preventDefault();
+			}
+			this.triggerEvent('popState', event);
+			this.loadPage({ url: link.getAddress() }, event);
+		}
+	}]);
+
+	return Swup;
+}();
+
+exports.default = Swup;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/Cache.js":
+/*!************************************************!*\
+  !*** ./node_modules/swup/lib/modules/Cache.js ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Cache = exports.Cache = function () {
+	function Cache() {
+		_classCallCheck(this, Cache);
+
+		this.pages = {};
+		this.last = null;
+	}
+
+	_createClass(Cache, [{
+		key: 'cacheUrl',
+		value: function cacheUrl(page) {
+			if (page.url in this.pages === false) {
+				this.pages[page.url] = page;
+			}
+			this.last = this.pages[page.url];
+			this.swup.log('Cache (' + Object.keys(this.pages).length + ')', this.pages);
+		}
+	}, {
+		key: 'getPage',
+		value: function getPage(url) {
+			return this.pages[url];
+		}
+	}, {
+		key: 'getCurrentPage',
+		value: function getCurrentPage() {
+			return this.getPage(window.location.pathname + window.location.search);
+		}
+	}, {
+		key: 'exists',
+		value: function exists(url) {
+			return url in this.pages;
+		}
+	}, {
+		key: 'empty',
+		value: function empty() {
+			this.pages = {};
+			this.last = null;
+			this.swup.log('Cache cleared');
+		}
+	}, {
+		key: 'remove',
+		value: function remove(url) {
+			delete this.pages[url];
+		}
+	}]);
+
+	return Cache;
+}();
+
+exports.default = Cache;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/getAnimationPromises.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/swup/lib/modules/getAnimationPromises.js ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _utils = __webpack_require__(/*! ../utils */ "./node_modules/swup/lib/utils/index.js");
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/swup/lib/helpers/index.js");
+
+var getAnimationPromises = function getAnimationPromises() {
+	var promises = [];
+	var animatedElements = (0, _utils.queryAll)(this.options.animationSelector);
+	animatedElements.forEach(function (element) {
+		var promise = new Promise(function (resolve) {
+			element.addEventListener((0, _helpers.transitionEnd)(), function (event) {
+				if (element == event.target) {
+					resolve();
+				}
+			});
+		});
+		promises.push(promise);
+	});
+	return promises;
+};
+
+exports.default = getAnimationPromises;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/getPageData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/swup/lib/modules/getPageData.js ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/swup/lib/helpers/index.js");
+
+var getPageData = function getPageData(request) {
+	// this method can be replaced in case other content than html is expected to be received from server
+	// this function should always return {title, pageClass, originalContent, blocks, responseURL}
+	// in case page has invalid structure - return null
+	var html = request.responseText;
+	var pageObject = (0, _helpers.getDataFromHtml)(html, this.options.containers);
+
+	if (pageObject) {
+		pageObject.responseURL = request.responseURL ? request.responseURL : window.location.href;
+	} else {
+		console.warn('Received page is invalid.');
+		return null;
+	}
+
+	return pageObject;
+};
+
+exports.default = getPageData;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/loadPage.js":
+/*!***************************************************!*\
+  !*** ./node_modules/swup/lib/modules/loadPage.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/swup/lib/helpers/index.js");
+
+var loadPage = function loadPage(data, popstate) {
+	var _this = this;
+
+	// create array for storing animation promises
+	var animationPromises = [],
+	    xhrPromise = void 0;
+	var animateOut = function animateOut() {
+		_this.triggerEvent('animationOutStart');
+
+		// handle classes
+		document.documentElement.classList.add('is-changing');
+		document.documentElement.classList.add('is-leaving');
+		document.documentElement.classList.add('is-animating');
+		if (popstate) {
+			document.documentElement.classList.add('is-popstate');
+		}
+		document.documentElement.classList.add('to-' + (0, _helpers.classify)(data.url));
+
+		// animation promise stuff
+		animationPromises = _this.getAnimationPromises('out');
+		Promise.all(animationPromises).then(function () {
+			_this.triggerEvent('animationOutDone');
+		});
+
+		// create history record if this is not a popstate call
+		if (!popstate) {
+			// create pop element with or without anchor
+			var state = void 0;
+			if (_this.scrollToElement != null) {
+				state = data.url + _this.scrollToElement;
+			} else {
+				state = data.url;
+			}
+
+			(0, _helpers.createHistoryRecord)(state);
+		}
+	};
+
+	this.triggerEvent('transitionStart', popstate);
+
+	// set transition object
+	if (data.customTransition != null) {
+		this.updateTransition(window.location.pathname, data.url, data.customTransition);
+		document.documentElement.classList.add('to-' + (0, _helpers.classify)(data.customTransition));
+	} else {
+		this.updateTransition(window.location.pathname, data.url);
+	}
+
+	// start/skip animation
+	if (!popstate || this.options.animateHistoryBrowsing) {
+		animateOut();
+	} else {
+		this.triggerEvent('animationSkipped');
+	}
+
+	// start/skip loading of page
+	if (this.cache.exists(data.url)) {
+		xhrPromise = new Promise(function (resolve) {
+			resolve();
+		});
+		this.triggerEvent('pageRetrievedFromCache');
+	} else {
+		if (!this.preloadPromise || this.preloadPromise.route != data.url) {
+			xhrPromise = new Promise(function (resolve, reject) {
+				(0, _helpers.fetch)(_extends({}, data, { headers: _this.options.requestHeaders }), function (response) {
+					if (response.status === 500) {
+						_this.triggerEvent('serverError');
+						reject(data.url);
+						return;
+					} else {
+						// get json data
+						var page = _this.getPageData(response);
+						if (page != null) {
+							page.url = data.url;
+						} else {
+							reject(data.url);
+							return;
+						}
+						// render page
+						_this.cache.cacheUrl(page);
+						_this.triggerEvent('pageLoaded');
+					}
+					resolve();
+				});
+			});
+		} else {
+			xhrPromise = this.preloadPromise;
+		}
+	}
+
+	// when everything is ready, handle the outcome
+	Promise.all(animationPromises.concat([xhrPromise])).then(function () {
+		// render page
+		_this.renderPage(_this.cache.getPage(data.url), popstate);
+		_this.preloadPromise = null;
+	}).catch(function (errorUrl) {
+		// rewrite the skipPopStateHandling function to redirect manually when the history.go is processed
+		_this.options.skipPopStateHandling = function () {
+			window.location = errorUrl;
+			return true;
+		};
+
+		// go back to the actual page were still at
+		window.history.go(-1);
+	});
+};
+
+exports.default = loadPage;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/off.js":
+/*!**********************************************!*\
+  !*** ./node_modules/swup/lib/modules/off.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var off = function off(event, handler) {
+	var _this = this;
+
+	if (event != null) {
+		if (handler != null) {
+			if (this._handlers[event] && this._handlers[event].filter(function (savedHandler) {
+				return savedHandler === handler;
+			}).length) {
+				var toRemove = this._handlers[event].filter(function (savedHandler) {
+					return savedHandler === handler;
+				})[0];
+				var index = this._handlers[event].indexOf(toRemove);
+				if (index > -1) {
+					this._handlers[event].splice(index, 1);
+				}
+			} else {
+				console.warn("Handler for event '" + event + "' no found.");
+			}
+		} else {
+			this._handlers[event] = [];
+		}
+	} else {
+		Object.keys(this._handlers).forEach(function (keys) {
+			_this._handlers[keys] = [];
+		});
+	}
+};
+
+exports.default = off;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/on.js":
+/*!*********************************************!*\
+  !*** ./node_modules/swup/lib/modules/on.js ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var on = function on(event, handler) {
+	if (this._handlers[event]) {
+		this._handlers[event].push(handler);
+	} else {
+		console.warn("Unsupported event " + event + ".");
+	}
+};
+
+exports.default = on;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/plugins.js":
+/*!**************************************************!*\
+  !*** ./node_modules/swup/lib/modules/plugins.js ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var use = exports.use = function use(plugin) {
+	if (!plugin.isSwupPlugin) {
+		console.warn('Not swup plugin instance ' + plugin + '.');
+		return;
+	}
+
+	this.plugins.push(plugin);
+	plugin.swup = this;
+	if (typeof plugin._beforeMount === 'function') {
+		plugin._beforeMount();
+	}
+	plugin.mount();
+
+	return this.plugins;
+};
+
+var unuse = exports.unuse = function unuse(plugin) {
+	var pluginReference = void 0;
+
+	if (typeof plugin === 'string') {
+		pluginReference = this.plugins.find(function (p) {
+			return plugin === p.name;
+		});
+	} else {
+		pluginReference = plugin;
+	}
+
+	if (!pluginReference) {
+		console.warn('No such plugin.');
+		return;
+	}
+
+	pluginReference.unmount();
+
+	if (typeof pluginReference._afterUnmount === 'function') {
+		pluginReference._afterUnmount();
+	}
+
+	var index = this.plugins.indexOf(pluginReference);
+	this.plugins.splice(index, 1);
+
+	return this.plugins;
+};
+
+var findPlugin = exports.findPlugin = function findPlugin(pluginName) {
+	return this.plugins.find(function (p) {
+		return pluginName === p.name;
+	});
+};
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/renderPage.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/swup/lib/modules/renderPage.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _utils = __webpack_require__(/*! ../utils */ "./node_modules/swup/lib/utils/index.js");
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/swup/lib/helpers/index.js");
+
+var renderPage = function renderPage(page, popstate) {
+	var _this = this;
+
+	document.documentElement.classList.remove('is-leaving');
+
+	// replace state in case the url was redirected
+	var link = new _helpers.Link(page.responseURL);
+	if (window.location.pathname !== link.getPath()) {
+		window.history.replaceState({
+			url: link.getPath(),
+			random: Math.random(),
+			source: 'swup'
+		}, document.title, link.getPath());
+
+		// save new record for redirected url
+		this.cache.cacheUrl(_extends({}, page, { url: link.getPath() }));
+	}
+
+	// only add for non-popstate transitions
+	if (!popstate || this.options.animateHistoryBrowsing) {
+		document.documentElement.classList.add('is-rendering');
+	}
+
+	this.triggerEvent('willReplaceContent', popstate);
+
+	// replace blocks
+	for (var i = 0; i < page.blocks.length; i++) {
+		document.body.querySelector('[data-swup="' + i + '"]').outerHTML = page.blocks[i];
+	}
+
+	// set title
+	document.title = page.title;
+
+	this.triggerEvent('contentReplaced', popstate);
+	this.triggerEvent('pageView', popstate);
+
+	// empty cache if it's disabled (because pages could be preloaded and stuff)
+	if (!this.options.cache) {
+		this.cache.empty();
+	}
+
+	// start animation IN
+	setTimeout(function () {
+		if (!popstate || _this.options.animateHistoryBrowsing) {
+			_this.triggerEvent('animationInStart');
+			document.documentElement.classList.remove('is-animating');
+		}
+	}, 10);
+
+	// handle end of animation
+	if (!popstate || this.options.animateHistoryBrowsing) {
+		var animationPromises = this.getAnimationPromises('in');
+		Promise.all(animationPromises).then(function () {
+			_this.triggerEvent('animationInDone');
+			_this.triggerEvent('transitionEnd', popstate);
+			// remove "to-{page}" classes
+			document.documentElement.className.split(' ').forEach(function (classItem) {
+				if (new RegExp('^to-').test(classItem) || classItem === 'is-changing' || classItem === 'is-rendering' || classItem === 'is-popstate') {
+					document.documentElement.classList.remove(classItem);
+				}
+			});
+		});
+	} else {
+		this.triggerEvent('transitionEnd', popstate);
+	}
+
+	// reset scroll-to element
+	this.scrollToElement = null;
+};
+
+exports.default = renderPage;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/triggerEvent.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/swup/lib/modules/triggerEvent.js ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var triggerEvent = function triggerEvent(eventName, originalEvent) {
+	// call saved handlers with "on" method and pass originalEvent object if available
+	this._handlers[eventName].forEach(function (handler) {
+		try {
+			handler(originalEvent);
+		} catch (error) {
+			console.error(error);
+		}
+	});
+
+	// trigger event on document with prefix "swup:"
+	var event = new CustomEvent('swup:' + eventName, { detail: eventName });
+	document.dispatchEvent(event);
+};
+
+exports.default = triggerEvent;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/modules/updateTransition.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/swup/lib/modules/updateTransition.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var updateTransition = function updateTransition(from, to, custom) {
+	// transition routes
+	this.transition = {
+		from: from,
+		to: to,
+		custom: custom
+	};
+};
+
+exports.default = updateTransition;
+
+/***/ }),
+
+/***/ "./node_modules/swup/lib/utils/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/swup/lib/utils/index.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+	value: true
+}));
+var query = exports.query = function query(selector) {
+	var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+
+	if (typeof selector !== 'string') {
+		return selector;
+	}
+
+	return context.querySelector(selector);
+};
+
+var queryAll = exports.queryAll = function queryAll(selector) {
+	var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+
+	if (typeof selector !== 'string') {
+		return selector;
+	}
+
+	return Array.prototype.slice.call(context.querySelectorAll(selector));
+};
 
 /***/ })
 
