@@ -11,12 +11,12 @@ module.exports = merge(common, {
 			{
 				port: 3666,
 				proxy: process.env.WP_HOME,
-				files: ['dist/*.js', 'dist/*.css'],
+				files: ['dist/app.js', 'dist/app.css'],
 			},
 			{
 				reload: false,
 				injectCss: true,
 			}
 		),
-	]
+	],
 });
