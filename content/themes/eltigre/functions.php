@@ -16,7 +16,8 @@ if ( class_exists( 'Timber' ) ) {
 		public function __construct() {
 			require 'class/Eltigre.php';
 			
-			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ) );
+			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ), 10, 2 );
+			add_action( 'theme_meta_description', array( $this, 'get_meta_description' ) );
 			add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
 			add_filter( 'upload_mimes', array( $this, 'wpc_mime_types' ) );
 			add_action( 'init', array( $this, 'register_post_types' ) );
@@ -34,6 +35,19 @@ if ( class_exists( 'Timber' ) ) {
 
 		public function update_stylesheet_directory( $stylesheet_dir_uri, $theme_name ) {
 			return $stylesheet_dir_uri . '/dist/';
+		}
+
+
+		public static function get_meta_description() { 
+			if ( class_exists( 'WPSEO_Options' ) ) {
+				return null;
+			}
+
+			ob_start(); ?>
+
+			 <meta name="description" content="<?php echo $this->description; ?>"><?php
+
+			 return apply_filters( 'theme_meta_description', ob_get_clean() );
 		}
 	
 	
@@ -71,6 +85,10 @@ if ( class_exists( 'Timber' ) ) {
 	
 	
 		public function enqueue() {
+			// SWIPER
+			wp_enqueue_style( 'swiper', 'https://unpkg.com/swiper/swiper-bundle.min.css' );
+			wp_enqueue_script( 'swiper', 'https://unpkg.com/swiper/swiper-bundle.min.js' );
+	
 			// CUSTOM
 			$files = scandir( dirname( __FILE__ ) . '/dist' );
 			foreach ( $files as $file ) {
@@ -88,9 +106,7 @@ if ( class_exists( 'Timber' ) ) {
 					wp_enqueue_style( $name, get_stylesheet_directory_uri() . $fullName );
 				}
 			}
-			
-	
-		
+		}
 	
 		public function theme_supports() {
 			// Adds ACF global options page
