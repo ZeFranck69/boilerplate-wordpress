@@ -110,9 +110,5 @@ module.exports = {
 		// 	fix: true,
 		// 	files: './dev/scss/**/*.(s(c|a)ss|css)',
 		// }),
-		new MiniCssExtractPlugin({
-			filename: 'app.css',
-			chunkFilename: '[id].css',
-		}),
 	],
 };
