@@ -15,7 +15,8 @@ if ( class_exists( 'Timber' ) ) {
    
 		public function __construct() {
 			require 'class/Eltigre.php';
-	
+			
+			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ) );
 			add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
 			add_filter( 'upload_mimes', array( $this, 'wpc_mime_types' ) );
 			add_action( 'init', array( $this, 'register_post_types' ) );
@@ -28,6 +29,11 @@ if ( class_exists( 'Timber' ) ) {
 			parent::__construct();
 
 			$this->load_extras();
+		}
+
+
+		public function update_stylesheet_directory( $stylesheet_dir_uri, $theme_name ) {
+			return $stylesheet_dir_uri . '/dist/';
 		}
 	
 	
@@ -64,27 +70,26 @@ if ( class_exists( 'Timber' ) ) {
 		}
 	
 	
-		public function register_styles() {
-			// VENDOR STYLES
-
-
-			// CUSTOM STYLES
-			wp_enqueue_style( 'app', get_template_directory_uri() . '/dist/app.css' );
-		}
+		public function enqueue() {
+			// CUSTOM
+			$files = scandir( dirname( __FILE__ ) . '/dist' );
+			foreach ( $files as $file ) {
+				$fullName = basename( $file );
+				$name = substr( basename( $fullName ), 0, strpos( basename( $fullName ), '.' ) );
+				if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'js' ) {
+					wp_enqueue_script( $name, get_stylesheet_directory_uri() . $fullName, array(), null, true );
+					wp_localize_script( $name, 'site', array(
+						'url' 		=> home_url(),
+						'ajaxurl' 	=> admin_url( 'admin-ajax.php' ),
+						'theme_url' => get_template_directory_uri(),
+						)  
+					);
+				} else if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'css' ) {
+					wp_enqueue_style( $name, get_stylesheet_directory_uri() . $fullName );
+				}
+			}
+			
 	
-	
-		public function register_scripts() {
-			// VENDOR SCRIPTS
-
-
-			// CUSTOM SCRIPTS
-			wp_enqueue_script( 'app', get_template_directory_uri() . '/dist/app.js' );
-			wp_localize_script('app', 'site', array(
-				'url' 		=> home_url(),
-				'ajaxurl' 	=> admin_url( 'admin-ajax.php' ),
-				'theme_url' => get_template_directory_uri(),
-			)  );
-		}
 		
 	
 		public function theme_supports() {
