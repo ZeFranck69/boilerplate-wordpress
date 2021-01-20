@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const WebpackBar = require('webpackbar');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -28,16 +29,6 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(svg|png|jpe?g)$/,
-				use: {
-					loader: 'file-loader',
-					options: {
-						name: '[name].[ext]',
-						outputPath: path.join(__dirname, '/dist'),
-					},
-				},
-			},
-			{
 				test: /\.m?js$/,
 				exclude: /node_modules/,
 				use: [
@@ -55,17 +46,35 @@ module.exports = {
 				use: ['style-loader', 'css-loader'],
 			},
 			{
-				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				test: /\.(svg)$/i,
 				type: 'asset/resource',
+				generator: {
+					filename: 'icons/[hash][ext][query]',
+				},
+			},
+			{
+				test: /\.(png|jpg|jpeg|gif)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: 'images/[hash][ext][query]',
+				},
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
+				generator: {
+					filename: 'fonts/[hash][ext][query]',
+				},
 			},
 			{
 				test: /\.s[ac]ss$/i,
 				use: [
-					MiniCssExtractPlugin.loader,
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							publicPath: '',
+						},
+					},
 					{
 						loader: 'css-loader',
 						options: {
@@ -91,15 +100,16 @@ module.exports = {
 		],
 	},
 	plugins: [
+		new CleanWebpackPlugin(),
 		new WebpackBar(),
 		new ESLintPlugin({
 			fix: true,
 			exclude: './node_modules/',
 		}),
-		new StylelintPlugin({
-			fix: true,
-			files: './dev/scss/**/*.(s(c|a)ss|css)',
-		}),
+		// new StylelintPlugin({
+		// 	fix: true,
+		// 	files: './dev/scss/**/*.(s(c|a)ss|css)',
+		// }),
 		new MiniCssExtractPlugin({
 			filename: 'app.css',
 			chunkFilename: '[id].css',
