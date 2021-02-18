@@ -44,7 +44,7 @@ if ( class_exists( 'Timber' ) ) {
 				}
 			}
 
-			 ?><meta name="description" content="<?php echo $this->description; ?>"><?php
+			?><meta name="description" content="<?php echo get_bloginfo( 'description' ); ?>"><?php
 		}
 	
 	
