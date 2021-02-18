@@ -19,13 +19,12 @@ if ( class_exists( 'Timber' ) ) {
 			require 'inc/class/Eltigre.php';
 			
 			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ), 10, 2 );
-			add_action( 'theme_meta_description', array( $this, 'get_meta_description' ) );
+			add_action( 'wp_head', array( $this, 'set_meta_description' ), 10, 1 );
 			add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
 			add_filter( 'upload_mimes', array( $this, 'wpc_mime_types' ) );
 			add_action( 'init', array( $this, 'register_post_types' ) );
 			add_action( 'init', array( $this, 'register_taxonomies' ) );
-			add_action( 'wp_enqueue_scripts', array($this, 'register_styles' ));
-			add_action( 'wp_enqueue_scripts', array($this, 'register_scripts' ));
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ));
 	
 			add_filter( 'timber/context', array( $this, 'add_to_context' ) );
 	
@@ -37,17 +36,15 @@ if ( class_exists( 'Timber' ) ) {
 			return $stylesheet_dir_uri . '/dist/';
 		}
 
-
-		public static function get_meta_description() { 
-			if ( class_exists( 'WPSEO_Options' ) ) {
-				return null;
+		public static function set_meta_description() { 
+			if ( class_exists( 'WPSEO_Options') ) {
+				$yoast_description = get_post_meta( get_the_ID(), '_yoast_wpseo_metadesc', true );
+				if ( !empty( $yoast_description ) ) {
+					return null;
+				}
 			}
 
-			ob_start(); ?>
-
-			 <meta name="description" content="<?php echo $this->description; ?>"><?php
-
-			 return apply_filters( 'theme_meta_description', ob_get_clean() );
+			 ?><meta name="description" content="<?php echo $this->description; ?>"><?php
 		}
 	
 	
