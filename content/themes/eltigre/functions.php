@@ -97,8 +97,13 @@ if ( class_exists( 'Timber' ) ) {
 						'url' 		=> home_url(),
 						'ajaxurl' 	=> admin_url( 'admin-ajax.php' ),
 						'theme_url' => get_template_directory_uri(),
-						)  
-					);
+						'translations' => array(
+							'contact' => array(
+								'message_sent' => __( 'Message envoyé !', 'eltigre' ),
+								'error' => __( 'Une erreur est survenue.', 'eltigre' )
+							)
+						)
+					));
 				} else if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'css' ) {
 					wp_enqueue_style( $name, get_stylesheet_directory_uri() . $fullName );
 				}

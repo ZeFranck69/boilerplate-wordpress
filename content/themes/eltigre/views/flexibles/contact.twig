@@ -1,0 +1,35 @@
+<section class="contact">
+  	<form class="contact__form">
+		<div class="contact__input-wrapper input-wrapper">
+			<input id="lastname" name="lastname" type="text" class="contact__input required">
+			<label class="contact__label" for="lastname">
+				{{ __( 'Nom', 'eltigre' ) }}
+			</label>
+		</div>
+
+		<div class="contact__input-wrapper input-wrapper">
+			<input id="firstname" name="firstname" type="text" class="contact__input required">
+			<label class="contact__label" for="firstname">
+				{{ __( 'Prénom', 'eltigre' ) }}
+			</label>
+		</div>
+
+		<div class="contact__input-wrapper input-wrapper">
+			<input id="email" name="email" type="email" class="contact__input required">
+			<label class="contact__label" for="email">
+				{{ __( 'Email', 'eltigre' ) }}
+			</label>
+		</div>
+
+		<div class="input-wrapper textarea-wrapper">
+			<textarea id="message" name="message" class="required" type="text"></textarea>
+			<label class="contact__label" for="message">
+				{{ __( 'Message', 'eltigre' ) }}
+			</label>
+		</div>
+
+		<button class="cta">
+			{{ __( 'Envoyer', 'eltigre' ) }}
+		</button>
+ 	</form>
+</section>
