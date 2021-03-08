@@ -2,7 +2,7 @@
 
 Le boilerplate utilisé pour démarrer un projet WP El Tigre.
 
-# LATEST
+# Latest
 
 - Formulaire de contact
 - Formulaire support intégré au Dashboard
