@@ -2,6 +2,11 @@
 
 Le boilerplate utilisé pour démarrer un projet WP El Tigre.
 
+# LATEST
+
+- Formulaire de contact
+- Formulaire support intégré au Dashboard
+- Sanitize filename (Suppression des accents à l'upload);
 ## Installation
 
 Cloner le repository
