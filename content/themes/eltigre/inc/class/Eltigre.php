@@ -20,8 +20,8 @@ class Eltigre {
         include_once 'ajax/Contact.php';
     }
     
-    
     private function load_admin() {
+        include_once 'admin/Uploads.php';
         include_once 'admin/ACF.php';
         include_once 'admin/Support.php';
     }

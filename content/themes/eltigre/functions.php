@@ -21,7 +21,6 @@ if ( class_exists( 'Timber' ) ) {
 			add_filter( 'stylesheet_directory_uri', array( $this, 'update_stylesheet_directory' ), 10, 2 );
 			add_action( 'wp_head', array( $this, 'set_meta_description' ), 10, 1 );
 			add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
-			add_filter( 'upload_mimes', array( $this, 'wpc_mime_types' ) );
 			add_action( 'init', array( $this, 'register_post_types' ) );
 			add_action( 'init', array( $this, 'register_taxonomies' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ));
@@ -148,13 +147,6 @@ if ( class_exists( 'Timber' ) ) {
 				)
 			);
 		}
-	
-		// Allow SVG
-		public function wpc_mime_types($mimes) {
-			$mimes['svg'] = 'image/svg+xml';
-			return $mimes;
-		}
-
 
 		private function load_extras() {
 			include_once 'inc/helper-functions.php';

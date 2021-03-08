@@ -23,7 +23,7 @@ class Contact {
             foreach ( $fields as $field ) {
                 $message .= $field['label'] . ': ' . $field['value'] . "\n"; 
             }
-            $message .= "Message: \n\n" . sanitize_text_field( $_POST['message'] );
+            $message .= "Message: \n\n" . sanitize_textarea_field( $_POST['message'] );
 
     
             // Set E-Mail subject
@@ -69,7 +69,7 @@ class Contact {
                 'required' => true
             ),
             'email' => array(
-                'value' => sanitize_text_field( $_POST['email'] ),
+                'value' => sanitize_email( $_POST['email'] ),
                 'label' => __( 'Prénom', 'eltigre' ),
                 'required' => true
             )
