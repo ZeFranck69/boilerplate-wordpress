@@ -110,6 +110,8 @@ if ( class_exists( 'Timber' ) ) {
 		}
 	
 		public function theme_supports() {
+			load_theme_textdomain( 'eltigre', get_template_directory() . '/languages' );
+
 			// Adds ACF global options page
 			if ( function_exists('acf_add_options_page') ) {
 				acf_add_options_page('Global options');	
