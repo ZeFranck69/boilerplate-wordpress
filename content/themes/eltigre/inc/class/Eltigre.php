@@ -1,8 +1,15 @@
 <?php
+use Timber\Timber;
+
 class Eltigre {
 
     public function __construct() {
+        $this->load_gutenberg();
         $this->load_classes();
+    }
+
+    private function load_gutenberg() {
+        include_once 'Gutenberg.php';
     }
 
     private function load_classes() {
